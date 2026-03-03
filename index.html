@@ -6,168 +6,426 @@
   <title>ChatGPT it (parodia)</title>
   <style>
     :root{
-      --bg:#0b0f17; --card:#111827; --muted:#94a3b8; --text:#e5e7eb;
-      --accent:#60a5fa; --accent2:#34d399; --danger:#fb7185;
-      --shadow: 0 18px 55px rgba(0,0,0,.55);
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --panel2: #fbfbfe;
+      --border: rgba(15, 23, 42, .10);
+      --border2: rgba(15, 23, 42, .14);
+      --text: #0f172a;
+      --muted: rgba(15, 23, 42, .60);
+      --muted2: rgba(15, 23, 42, .45);
+      --accent: #2563eb;
+      --accent2: #10b981;
+      --shadow: 0 22px 60px rgba(15, 23, 42, .12);
       --radius: 18px;
+      --radius2: 14px;
     }
-    *{box-sizing:border-box}
+
+    *{ box-sizing:border-box; }
     body{
-      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background: radial-gradient(1200px 700px at 50% -10%, rgba(96,165,250,.35), transparent 55%),
-                  radial-gradient(900px 500px at 90% 20%, rgba(52,211,153,.22), transparent 55%),
-                  var(--bg);
-      color:var(--text);
-      min-height:100vh;
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background:
+        radial-gradient(1200px 700px at 10% -10%, rgba(37,99,235,.14), transparent 55%),
+        radial-gradient(900px 500px at 95% 10%, rgba(16,185,129,.10), transparent 60%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:24px;
+      padding: 20px;
     }
-    .wrap{width:min(980px, 100%);}
-    .topbar{
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      margin-bottom:14px;
-    }
-    .badge{
-      display:inline-flex; align-items:center; gap:10px;
-      padding:10px 14px; border-radius:999px;
-      background: rgba(17,24,39,.65);
-      border:1px solid rgba(148,163,184,.2);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
-      user-select:none;
-      white-space:nowrap;
-    }
-    .dot{width:10px;height:10px;border-radius:50%;background:var(--accent2); box-shadow:0 0 0 6px rgba(52,211,153,.12);}
-    .hint{color:var(--muted); font-size:13px;}
-    .card{
-      position:relative;
-      background: linear-gradient(180deg, rgba(17,24,39,.92), rgba(17,24,39,.72));
-      border:1px solid rgba(148,163,184,.22);
-      border-radius: var(--radius);
+
+    .app{
+      width: min(1150px, 100%);
+      height: min(760px, 90vh);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 26px;
       box-shadow: var(--shadow);
       overflow:hidden;
+      display:flex;
     }
-    .card-inner{padding:22px;}
-    .fake-google{
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(148,163,184,.18);
-      border-radius: 22px;
-      padding:18px;
-      position:relative;
+
+    /* Sidebar */
+    .side{
+      width: 320px;
+      background: linear-gradient(180deg, var(--panel2), #fff);
+      border-right: 1px solid var(--border);
+      display:flex;
+      flex-direction:column;
     }
-    .logo{
-      font-weight:800; letter-spacing:.3px; font-size:24px; line-height:1.1;
-      display:flex; align-items:center; gap:8px; margin-bottom:14px;
+    .sideTop{
+      padding: 18px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border-bottom: 1px solid var(--border);
     }
-    .logo span{display:inline-block}
-    .logo .c1{color:#60a5fa}
-    .logo .c2{color:#f472b6}
-    .logo .c3{color:#34d399}
-    .logo .c4{color:#fbbf24}
-    .searchRow{
-      display:flex; gap:10px; align-items:center;
-      flex-wrap:wrap;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight: 900;
+      letter-spacing:.2px;
     }
-    .searchBox{
-      flex:1 1 520px;
-      display:flex; align-items:center; gap:10px;
-      background: rgba(0,0,0,.25);
-      border:1px solid rgba(148,163,184,.25);
+    .pill{
+      font-size:12px;
+      padding: 6px 10px;
       border-radius: 999px;
-      padding: 12px 14px;
-      min-height:48px;
-      position:relative;
-      overflow:hidden;
+      border:1px solid var(--border);
+      color: var(--muted);
+      background: rgba(255,255,255,.7);
     }
-    .magnify{
-      width:18px; height:18px; opacity:.85;
+    .newBtn{
+      border:1px solid var(--border);
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 12px;
+      cursor:pointer;
+      font-weight: 750;
+      color: var(--text);
+      display:flex;
+      align-items:center;
+      gap:8px;
+      transition: transform .08s ease, box-shadow .2s ease;
     }
-    .typed{
-      font-size:16px; letter-spacing:.2px;
+    .newBtn:hover{ box-shadow: 0 12px 28px rgba(15,23,42,.10); }
+    .newBtn:active{ transform: translateY(1px); }
+
+    .chatList{
+      padding: 12px;
+      overflow:auto;
+      flex:1;
+    }
+    .chatItem{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      padding: 12px;
+      border-radius: 14px;
+      border:1px solid transparent;
+      cursor:pointer;
+      user-select:none;
+    }
+    .chatItem:hover{
+      background: rgba(37,99,235,.05);
+      border-color: rgba(37,99,235,.12);
+    }
+    .chatItem.active{
+      background: rgba(37,99,235,.08);
+      border-color: rgba(37,99,235,.18);
+    }
+    .avatar{
+      width:34px;
+      height:34px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(37,99,235,.25), rgba(16,185,129,.18));
+      border:1px solid rgba(37,99,235,.18);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 900;
+      color: rgba(15,23,42,.75);
+      flex: 0 0 auto;
+    }
+    .chatMeta{ min-width:0; }
+    .chatTitle{
+      font-weight: 850;
+      font-size: 14px;
+      margin:0 0 3px 0;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
+    }
+    .chatPreview{
+      margin:0;
+      font-size: 12.5px;
+      color: var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .sideBottom{
+      padding: 12px 14px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12.5px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+    }
+
+    /* Main */
+    .main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      position:relative;
+      background: #fff;
+    }
+
+    .mainTop{
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .crumb{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .crumb h1{
+      font-size: 15px;
+      margin:0;
+      font-weight: 900;
+      letter-spacing: .2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .sub{
+      color: var(--muted);
+      font-size: 12.5px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .tools{
+      display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;
+    }
+    .btn{
+      border:1px solid var(--border);
+      background: #fff;
+      border-radius: 999px;
+      padding: 9px 12px;
+      cursor:pointer;
+      font-weight: 750;
+      color: var(--text);
+      transition: transform .08s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .btn:hover{ box-shadow: 0 14px 30px rgba(15,23,42,.10); border-color: var(--border2); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      border-color: rgba(37,99,235,.28);
+      background: rgba(37,99,235,.08);
+      color: rgba(37,99,235,1);
+    }
+
+    .stage{
+      position:relative;
+      padding: 18px;
+      overflow:auto;
       flex:1;
     }
+
+    /* Satire banner */
+    .oil-banner{
+      display:flex;
+      gap:14px;
+      align-items:stretch;
+      justify-content:space-between;
+      padding:14px 14px;
+      border-radius: 16px;
+      background:
+        radial-gradient(700px 220px at 10% 10%, rgba(251,191,36,.18), transparent 60%),
+        radial-gradient(700px 220px at 90% 30%, rgba(244,63,94,.14), transparent 60%),
+        rgba(15,23,42,.03);
+      border:1px solid var(--border);
+      margin-bottom: 14px;
+    }
+    .oil-left{flex:1 1 auto; min-width: 260px;}
+    .oil-title{font-weight: 950; margin-bottom:6px;}
+    .oil-text{color: rgba(15,23,42,.85); line-height:1.45;}
+    .oil-chant{
+      display:inline-block;
+      margin-left:6px;
+      font-weight: 950;
+      color: rgba(234,179,8,1);
+      animation: chant .55s infinite;
+    }
+    @keyframes chant{ 0%{transform:translateY(0)} 25%{transform:translateY(-1px)} 50%{transform:translateY(0)} 75%{transform:translateY(1px)} 100%{transform:translateY(0)} }
+    .oil-sub{ margin-top:6px; font-size:12.5px; color: var(--muted); }
+    .oil-right{
+      flex: 0 0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius: 14px;
+      padding:6px 8px;
+      background: rgba(255,255,255,.75);
+      border:1px solid var(--border);
+    }
+    @media (max-width: 840px){
+      .side{ display:none; }
+      .app{ height: auto; min-height: 80vh; }
+    }
+    @media (max-width: 720px){
+      .oil-banner{ flex-direction:column; }
+      .oil-right{ justify-content:flex-start; }
+    }
+
+    /* “Chat-like” output cards */
+    .bubble{
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 14px;
+      box-shadow: 0 14px 38px rgba(15,23,42,.08);
+      margin-bottom: 12px;
+    }
+    .bubble .meta{
+      color: var(--muted);
+      font-size: 12.5px;
+      margin-bottom: 8px;
+    }
+    .bubble .title{
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      font-weight: 950;
+      letter-spacing:.1px;
+    }
+    .bubble .desc{
+      margin:0;
+      color: rgba(15,23,42,.88);
+      line-height: 1.55;
+      white-space: pre-wrap;
+    }
+
+    /* Input bar */
+    .composer{
+      padding: 14px 18px;
+      border-top: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,1));
+    }
+    .bar{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      border: 1px solid var(--border2);
+      background: #fff;
+      border-radius: 999px;
+      padding: 10px 12px;
+      box-shadow: 0 16px 36px rgba(15,23,42,.08);
+    }
+    .prompt{
+      flex:1;
+      min-height: 26px;
+      border:0;
+      outline:none;
+      font-size: 15px;
+      color: var(--text);
+      background: transparent;
+    }
+    .prompt::placeholder{ color: rgba(15,23,42,.45); }
+    .send{
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid rgba(37,99,235,.25);
+      background: rgba(37,99,235,.10);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition: transform .08s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .send:hover{ box-shadow: 0 16px 34px rgba(37,99,235,.14); background: rgba(37,99,235,.13); }
+    .send:active{ transform: translateY(1px); }
+    .send svg{ width:18px; height:18px; color: rgba(37,99,235,1); }
+
+    /* Typewriter overlay inside prompt (fake typing) */
+    .typeLayer{
+      position:relative;
+      flex:1;
+      display:flex;
+      align-items:center;
+      min-height: 26px;
+    }
+    .typed{
+      font-size: 15px;
+      color: rgba(15,23,42,.92);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
     .caret{
-      width:10px; height:18px;
-      border-left:2px solid rgba(229,231,235,.85);
+      width: 10px;
+      height: 18px;
+      border-left: 2px solid rgba(15,23,42,.65);
+      margin-left: 2px;
       animation: blink 1s step-end infinite;
-      margin-left:2px;
     }
     @keyframes blink{50%{opacity:0}}
-    .btn{
-      appearance:none; border:0;
-      padding:12px 14px;
-      border-radius:999px;
-      background: rgba(96,165,250,.2);
-      color:var(--text);
-      border:1px solid rgba(96,165,250,.35);
-      cursor:pointer;
-      font-weight:700;
-      transition: transform .08s ease, background .2s ease, border-color .2s ease;
-      user-select:none;
-    }
-    .btn:hover{background: rgba(96,165,250,.28); border-color: rgba(96,165,250,.48);}
-    .btn:active{transform: translateY(1px) scale(.995);}
-    .btn.secondary{
-      background: rgba(148,163,184,.12);
-      border-color: rgba(148,163,184,.2);
-      font-weight:650;
-    }
-    .btn.secondary:hover{background: rgba(148,163,184,.16);}
-    .btn.good{
-      background: rgba(52,211,153,.16);
-      border-color: rgba(52,211,153,.28);
-    }
-    .btn.good:hover{background: rgba(52,211,153,.22); border-color: rgba(52,211,153,.38);}
-    .result{
-      margin-top:16px;
-      padding:16px;
-      border-radius: 16px;
-      background: rgba(0,0,0,.22);
-      border:1px solid rgba(148,163,184,.18);
-      display:none;
-    }
-    .result.show{display:block; animation: pop .25s ease-out;}
-    @keyframes pop{from{transform:translateY(6px); opacity:0} to{transform:translateY(0); opacity:1}}
-    .result .meta{color:var(--muted); font-size:12.5px; margin-bottom:8px;}
-    .result .title{font-size:18px; font-weight:800; margin:0 0 6px 0;}
-    .result .desc{margin:0; color: rgba(229,231,235,.92); line-height:1.5;}
-    .footer{
-      margin-top:14px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
+
+    /* Share row */
+    .shareRow{
+      display:flex;
+      gap:10px;
       flex-wrap:wrap;
-      color:var(--muted);
-      font-size:13px;
+      margin-top: 10px;
     }
-    a{color:rgba(96,165,250,.95); text-decoration:none}
-    a:hover{text-decoration:underline}
+    .miniInput{
+      flex: 1 1 360px;
+      min-height: 42px;
+      border-radius: 12px;
+      border:1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      padding: 10px 12px;
+      outline:none;
+    }
+    .miniInput::placeholder{ color: rgba(15,23,42,.45); }
+
+    /* Footer credit */
+    .credit{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12.5px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    a{ color: rgba(37,99,235,1); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+
+    /* Toast */
     .toast{
-      position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
-      background: rgba(17,24,39,.92);
-      border:1px solid rgba(148,163,184,.22);
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform:translateX(-50%);
+      background: rgba(15,23,42,.92);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.18);
       padding:10px 12px;
       border-radius: 999px;
-      box-shadow: 0 18px 55px rgba(0,0,0,.55);
-      color:var(--text);
+      box-shadow: 0 22px 60px rgba(15,23,42,.25);
       font-size:13px;
-      opacity:0; pointer-events:none;
+      opacity:0;
+      pointer-events:none;
       transition: opacity .2s ease, transform .2s ease;
       z-index:9999;
     }
-    .toast.show{opacity:1; transform:translateX(-50%) translateY(-4px);}
+    .toast.show{ opacity:1; transform:translateX(-50%) translateY(-4px); }
 
-    /* Mouse finto */
+    /* Mouse fake */
     .mouse{
       position:absolute;
       width:22px; height:32px;
       border-radius: 12px;
-      border:2px solid rgba(229,231,235,.85);
-      background: rgba(0,0,0,.08);
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      border:2px solid rgba(15,23,42,.65);
+      background: rgba(255,255,255,.65);
+      box-shadow: 0 14px 34px rgba(15,23,42,.12);
       display:none;
       z-index:50;
       pointer-events:none;
@@ -177,108 +435,202 @@
       position:absolute;
       left:50%; top:6px;
       width:2px; height:8px;
-      background: rgba(229,231,235,.85);
+      background: rgba(15,23,42,.65);
       transform:translateX(-50%);
       border-radius: 2px;
       opacity:.9;
     }
-    .mouse.clicking{
-      animation: clickPulse .35s ease-in-out 2;
-    }
+    .mouse.clicking{ animation: clickPulse .35s ease-in-out 2; }
     @keyframes clickPulse{
       0%{transform:scale(1)}
       50%{transform:scale(.92)}
       100%{transform:scale(1)}
     }
 
-    .mini{
-      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
-      margin-top:10px;
-    }
-    .input{
-      flex: 1 1 420px;
-      min-height:44px;
-      border-radius: 12px;
-      border:1px solid rgba(148,163,184,.22);
-      background: rgba(0,0,0,.2);
-      color: var(--text);
-      padding: 10px 12px;
-      outline:none;
-    }
-    .input::placeholder{color:rgba(148,163,184,.8)}
+    /* tiny kbd */
     .kbd{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
       font-size:12px;
       padding:2px 8px;
       border-radius: 999px;
-      border:1px solid rgba(148,163,184,.25);
-      background: rgba(148,163,184,.10);
-      color: rgba(229,231,235,.9);
+      border:1px solid var(--border);
+      background: rgba(15,23,42,.03);
+      color: rgba(15,23,42,.75);
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="badge">
-        <span class="dot"></span>
-        <span><strong>ChatGPT it</strong> <span class="hint">(parodia “google it”)</span></span>
-      </div>
-      <div class="badge">
-        <span class="hint">URL: <span class="kbd">?q=la%20tua%20frase</span></span>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-inner">
-        <div class="fake-google" id="stage">
-          <div class="logo" aria-label="Logo">
-            <span class="c1">Chat</span><span class="c2">GPT</span><span class="c3">it</span><span class="c4">™</span>
+  <div class="app" id="app">
+    <aside class="side">
+      <div class="sideTop">
+        <div class="brand">
+          <span class="avatar" style="width:30px;height:30px;border-radius:10px;">C</span>
+          <div>
+            <div style="font-size:14px; font-weight:950;">ChatGPT it</div>
+            <div class="pill">parodia · <span class="kbd">?q=...</span></div>
           </div>
+        </div>
+        <button class="newBtn" id="newChatBtn" title="Nuova chat">
+          <span>+</span><span>Nuova</span>
+        </button>
+      </div>
 
-          <div class="searchRow">
-            <div class="searchBox" id="searchBox">
-              <svg class="magnify" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M10.5 19a8.5 8.5 0 1 1 0-17 8.5 8.5 0 0 1 0 17Z" stroke="currentColor" stroke-width="2" opacity=".9"/>
-                <path d="M16.8 16.8 22 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".9"/>
-              </svg>
-              <div class="typed" id="typed"></div>
-              <div class="caret" id="caret"></div>
+      <div class="chatList" id="chatList">
+        <!-- fake chats -->
+        <div class="chatItem active" data-q="cos'è chatgpt it?">
+          <div class="avatar">🧠</div>
+          <div class="chatMeta">
+            <p class="chatTitle">ChatGPT it</p>
+            <p class="chatPreview">scrivi la frase e aspetta il “risultato”…</p>
+          </div>
+        </div>
+        <div class="chatItem" data-q="come riparare una query che non vuole collaborare">
+          <div class="avatar">🧩</div>
+          <div class="chatMeta">
+            <p class="chatTitle">Query ribelle</p>
+            <p class="chatPreview">fix, rituali e piccoli compromessi</p>
+          </div>
+        </div>
+        <div class="chatItem" data-q="perché il codice funziona solo quando lo guardi male?">
+          <div class="avatar">😑</div>
+          <div class="chatMeta">
+            <p class="chatTitle">Bug superstiziosi</p>
+            <p class="chatPreview">storie vere (o quasi) di debug</p>
+          </div>
+        </div>
+        <div class="chatItem" data-q="dimmi una verità scomoda sul lavoro al pc">
+          <div class="avatar">🪑</div>
+          <div class="chatMeta">
+            <p class="chatTitle">Vita sedentaria</p>
+            <p class="chatPreview">spalle, occhi, e caffeina</p>
+          </div>
+        </div>
+        <div class="chatItem" data-q="ricetta: pasta + bugfix + dignità">
+          <div class="avatar">🍝</div>
+          <div class="chatMeta">
+            <p class="chatTitle">Cucina DevOps</p>
+            <p class="chatPreview">ingredienti minimi, sapore massimo</p>
+          </div>
+        </div>
+        <div class="chatItem" data-q="dig it dig it (mode: goliardia)">
+          <div class="avatar">⛽</div>
+          <div class="chatMeta">
+            <p class="chatTitle">Petrol Mode</p>
+            <p class="chatPreview">promesse energetiche discutibili</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sideBottom">
+        <span>Shortcut: <span class="kbd">Invio</span></span>
+        <span style="display:flex;gap:6px;align-items:center;">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--accent2);display:inline-block;"></span>
+          online
+        </span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="mainTop">
+        <div class="crumb">
+          <div style="width:10px;height:10px;border-radius:50%;background:rgba(37,99,235,.55); box-shadow:0 0 0 8px rgba(37,99,235,.10);"></div>
+          <div style="min-width:0;">
+            <h1 id="pageTitle">Scrivi la frase. Aspetta il risultato.</h1>
+            <div class="sub" id="pageSub">Parodia. Nessuna pretesa. Massima goliardia controllata.</div>
+          </div>
+        </div>
+        <div class="tools">
+          <button class="btn" id="againBtn">Ricomincia</button>
+          <button class="btn primary" id="copyBtn">Condividi</button>
+        </div>
+      </header>
+
+      <section class="stage" id="stage">
+        <!-- SATIRE BANNER -->
+        <div class="oil-banner" role="note" aria-label="Avvertimento satirico">
+          <div class="oil-left">
+            <div class="oil-title">⚠️ Petrol Pledge™</div>
+            <div class="oil-text">
+              Ci assicuriamo che l’energia usata per questa pagina sia <strong>100% fossile</strong>.
+              Vogliamo <strong>più petrolio per i nostri figli</strong>. <span class="oil-chant">DIG IT · DIG IT</span>
             </div>
-
-            <button class="btn" id="sendBtn">Invia</button>
-            <button class="btn secondary" id="againBtn" title="Ricomincia">Ricomincia</button>
+            <div class="oil-sub">(Parodia. Non è un invito reale. È satira.)</div>
           </div>
 
-          <div class="result" id="result">
-            <div class="meta" id="meta"></div>
-            <h3 class="title" id="title"></h3>
-            <p class="desc" id="desc"></p>
+          <!-- caricatura SVG “Trump che ride” (stile cartoon, non foto) -->
+          <div class="oil-right" aria-hidden="true" title="Trump che ride (caricatura)">
+            <svg viewBox="0 0 140 120" width="140" height="120">
+              <circle cx="70" cy="52" r="34" fill="rgba(15,23,42,.06)"/>
+              <circle cx="70" cy="52" r="33" fill="rgba(255,255,255,.92)"/>
+              <path d="M42 44c10-18 44-26 66-8-10-2-18 4-22 10 6 0 10 2 14 6-12-2-22 2-30 10-2-8-10-14-28-18Z"
+                    fill="rgba(234,179,8,.95)"/>
+              <circle cx="58" cy="54" r="3" fill="rgba(15,23,42,.65)"/>
+              <circle cx="82" cy="54" r="3" fill="rgba(15,23,42,.65)"/>
+              <path d="M52 68c10 14 26 14 36 0" fill="none" stroke="rgba(15,23,42,.65)" stroke-width="4" stroke-linecap="round"/>
+              <path d="M56 70c8 10 20 10 28 0" fill="none" stroke="rgba(244,63,94,.70)" stroke-width="3" stroke-linecap="round"/>
+              <path d="M70 86 58 114h24L70 86Z" fill="rgba(244,63,94,.78)"/>
+              <path d="M28 118c8-22 28-30 42-30s34 8 42 30" fill="rgba(15,23,42,.88)"/>
+              <text x="70" y="18" text-anchor="middle" font-size="12" fill="rgba(15,23,42,.55)" font-weight="900">
+                TRUMP 😂
+              </text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="bubble" id="bubbleIntro">
+          <div class="meta">Come funziona</div>
+          <h3 class="title">“ChatGPT it”</h3>
+          <p class="desc">
+Scrivi una frase (o apri questa pagina con <span class="kbd">?q=la%20tua%20frase</span>).
+Poi guarda il mouse che clicca “Invia” e aspettati una risposta goliardica.
+          </p>
+
+          <div class="shareRow">
+            <input class="miniInput" id="shareInput" placeholder="Scrivi una frase e premi Genera link…" />
+            <button class="btn primary" id="genBtn">Genera link</button>
           </div>
 
-          <div class="mini">
-            <input class="input" id="shareInput" placeholder="Scrivi una frase e premi Genera link…" />
-            <button class="btn good" id="genBtn">Genera link</button>
-            <button class="btn secondary" id="copyBtn">Copia link</button>
-          </div>
-
-          <div class="footer">
+          <div class="credit">
             <div>
               Ideato da <strong>Vincenzo Di Franco</strong> ·
               <a href="https://www.linkedin.com/in/vincenzo-di-franco-38216645/" target="_blank" rel="noopener">LinkedIn</a>
             </div>
-            <div class="hint">
-              Tip: premi <span class="kbd">Invio</span> per “Invia”
-            </div>
+            <div class="sub">Tip: premi <span class="kbd">Invio</span> per inviare</div>
+          </div>
+        </div>
+
+        <div class="bubble" id="bubbleResult" style="display:none;">
+          <div class="meta" id="meta"></div>
+          <h3 class="title" id="title"></h3>
+          <p class="desc" id="desc"></p>
+        </div>
+
+        <div class="mouse" id="mouse" aria-hidden="true"></div>
+      </section>
+
+      <footer class="composer">
+        <div class="bar">
+          <!-- fake typed layer (so user sees typing effect) -->
+          <div class="typeLayer">
+            <div class="typed" id="typed"></div>
+            <div class="caret" id="caret"></div>
           </div>
 
-          <div class="mouse" id="mouse" aria-hidden="true"></div>
-        </div>
-      </div>
-    </div>
+          <!-- real input for user override -->
+          <input class="prompt" id="prompt" placeholder="Scrivi qui… (oppure usa ?q=...)" autocomplete="off" />
 
-    <div class="toast" id="toast"></div>
+          <button class="send" id="sendBtn" title="Invia">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 12h13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </footer>
+    </main>
   </div>
+
+  <div class="toast" id="toast"></div>
 
   <script>
     (function(){
@@ -286,62 +638,46 @@
 
       const typedEl = $("typed");
       const caretEl = $("caret");
+      const promptEl = $("prompt");
       const sendBtn = $("sendBtn");
       const againBtn = $("againBtn");
-      const resultEl = $("result");
+      const copyBtn = $("copyBtn");
+      const genBtn = $("genBtn");
+      const shareInput = $("shareInput");
+      const toastEl = $("toast");
+      const chatList = $("chatList");
+
+      const bubbleIntro = $("bubbleIntro");
+      const bubbleResult = $("bubbleResult");
       const metaEl = $("meta");
       const titleEl = $("title");
       const descEl = $("desc");
+
       const mouseEl = $("mouse");
       const stageEl = $("stage");
-      const shareInput = $("shareInput");
-      const genBtn = $("genBtn");
-      const copyBtn = $("copyBtn");
-      const toastEl = $("toast");
+      const pageTitle = $("pageTitle");
 
       const params = new URLSearchParams(location.search);
       const qFromUrl = (params.get("q") || "").trim();
 
-      const defaultQueries = [
-        "come si fa a vivere meglio con il caos?",
+      const defaults = [
+        "cos'è chatgpt it? (google it vibes)",
         "perché il codice funziona solo quando lo guardi male?",
-        "ricetta veloce: pasta + bugfix",
-        "cos'è un 'AI Engineer' senza caffè?",
-        "come convincere una query a collaborare?"
+        "come riparare una query che non vuole collaborare",
+        "dig it dig it (mode: goliardia)",
+        "ricetta: pasta + bugfix + dignità"
       ];
 
       function pickQuery(){
         if(qFromUrl) return qFromUrl;
-        return defaultQueries[Math.floor(Math.random()*defaultQueries.length)];
+        return defaults[Math.floor(Math.random()*defaults.length)];
       }
 
-      const query = pickQuery();
-
-      // Risposte “goliardiche” ma safe
-      function makeGoliardicAnswer(q){
-        const bank = [
-          `Ho “chatgptato” la cosa e il verdetto è: dipende… ma con abbastanza ironia, si risolve.`,
-          `Risposta ufficiale: sì. Risposta reale: *forse*. Risposta finale: fai una prova e poi negalo con eleganza.`,
-          `Mi risulta che la soluzione più stabile sia: 1) respira 2) spegni e riaccendi 3) raccontalo come strategia.`,
-          `Ho cercato dentro di me (che sono un software) e ho trovato: una battuta, due dubbi e una certezza: serve caffè.`,
-          `Analisi rapida: 80% contesto, 20% audacia. Applica entrambi e poi fingiti sorpreso dal successo.`
-        ];
-        const add = [
-          `\n\nQuery ricevuta: “${q}”.`,
-          `\n\nFonti: fiducia, esperienza collettiva e un pizzico di teatro.`,
-          `\n\nSe non funziona: cambia domanda finché la realtà collabora.`,
-          `\n\nNota: questa risposta è stata approvata dal Dipartimento di Goliardia Applicata.`
-        ];
-        const a = bank[Math.floor(Math.random()*bank.length)];
-        const b = add[Math.floor(Math.random()*add.length)];
-        return a + b;
-      }
+      let currentQuery = pickQuery();
 
       function nowTime(){
         try{
-          return new Intl.DateTimeFormat("it-IT", {
-            dateStyle:"full", timeStyle:"medium"
-          }).format(new Date());
+          return new Intl.DateTimeFormat("it-IT", { dateStyle:"full", timeStyle:"medium" }).format(new Date());
         } catch(e){
           return new Date().toLocaleString();
         }
@@ -354,9 +690,27 @@
         showToast._t = setTimeout(()=>toastEl.classList.remove("show"), 1600);
       }
 
-      // Typewriter
+      // goliardic answer (safe)
+      function makeAnswer(q){
+        const bank = [
+          `Ho “chatgptato” la cosa e il verdetto è: dipende… ma con abbastanza ironia, si risolve.`,
+          `Risposta ufficiale: sì. Risposta reale: forse. Risposta finale: fai una prova e poi raccontala come strategia.`,
+          `Soluzione più stabile: 1) respira 2) spegni e riaccendi 3) dichiaralo “approccio iterativo”.`,
+          `Ho cercato dentro di me (che sono un software) e ho trovato: una battuta, due dubbi e una certezza: serve caffè.`,
+          `Analisi rapida: 80% contesto, 20% audacia. Applica entrambi e poi fingiti sorpreso dal successo.`
+        ];
+        const add = [
+          `\n\nQuery ricevuta: “${q}”.`,
+          `\n\nFonti: fiducia, esperienza collettiva e un pizzico di teatro.`,
+          `\n\nSe non funziona: cambia domanda finché la realtà collabora.`,
+          `\n\nNota: risposta approvata dal Dipartimento di Goliardia Applicata.`
+        ];
+        return bank[Math.floor(Math.random()*bank.length)] + add[Math.floor(Math.random()*add.length)];
+      }
+
+      // typewriter into typedEl
       let typing = false;
-      function typeQuery(text, speed=32){
+      async function typeQuery(text, speed=26){
         typing = true;
         typedEl.textContent = "";
         caretEl.style.display = "block";
@@ -376,49 +730,33 @@
         });
       }
 
-      // Mouse animation (moves to button and "clicks")
+      // mouse animation
       function moveMouseTo(el){
         const stageRect = stageEl.getBoundingClientRect();
         const r = el.getBoundingClientRect();
-        const targetX = (r.left - stageRect.left) + r.width*0.78;
+        const targetX = (r.left - stageRect.left) + r.width*0.65;
         const targetY = (r.top - stageRect.top) + r.height*0.55;
-
         mouseEl.style.display = "block";
         mouseEl.style.left = (targetX - 10) + "px";
-        mouseEl.style.top = (targetY - 16) + "px";
+        mouseEl.style.top  = (targetY - 16) + "px";
       }
-
       async function clickMouse(){
         mouseEl.classList.add("clicking");
         await new Promise(r=>setTimeout(r, 520));
         mouseEl.classList.remove("clicking");
       }
 
-      function showResult(){
-        const answer = makeGoliardicAnswer(query);
+      function showResult(q){
+        const answer = makeAnswer(q);
         metaEl.textContent = `Risultato generato · ${nowTime()}`;
         titleEl.textContent = `“ChatGPT it” → ecco cosa ne esce`;
         descEl.textContent = answer;
-        resultEl.classList.add("show");
+
+        bubbleIntro.style.display = "none";
+        bubbleResult.style.display = "block";
+        pageTitle.textContent = "Risposta goliardica (non vincolante)";
       }
 
-      async function run(){
-        resultEl.classList.remove("show");
-        mouseEl.style.display = "none";
-
-        await typeQuery(query, 28);
-        await new Promise(r=>setTimeout(r, 250));
-
-        moveMouseTo(sendBtn);
-        await new Promise(r=>setTimeout(r, 220));
-        await clickMouse();
-
-        // piccolo delay “attesa risultato”
-        await new Promise(r=>setTimeout(r, 420));
-        showResult();
-      }
-
-      // Link generator
       function buildShareUrl(q){
         const base = location.origin + location.pathname;
         const u = new URL(base);
@@ -426,51 +764,62 @@
         return u.toString();
       }
 
-      function setUrlWithoutReload(q){
+      function setActiveChatByText(q){
+        document.querySelectorAll(".chatItem").forEach(el=>{
+          const is = (el.getAttribute("data-q") || "") === q;
+          el.classList.toggle("active", is);
+        });
+      }
+
+      async function run(q){
+        currentQuery = q;
+        setActiveChatByText(q);
+
+        bubbleResult.style.display = "none";
+        bubbleIntro.style.display = "block";
+        pageTitle.textContent = "Scrivi la frase. Aspetta il risultato.";
+        mouseEl.style.display = "none";
+
+        // type into fake layer
+        await typeQuery(q, 24);
+        await new Promise(r=>setTimeout(r, 260));
+
+        // move mouse to send + click
+        moveMouseTo(sendBtn);
+        await new Promise(r=>setTimeout(r, 220));
+        await clickMouse();
+
+        await new Promise(r=>setTimeout(r, 420));
+        showResult(q);
+      }
+
+      // sidebar click -> set URL + reload (simpler, deterministic)
+      chatList.addEventListener("click", (e)=>{
+        const item = e.target.closest(".chatItem");
+        if(!item) return;
+        const q = (item.getAttribute("data-q") || "").trim();
+        if(!q) return;
         const u = new URL(location.href);
         u.searchParams.set("q", q);
         history.replaceState({}, "", u.toString());
-      }
-
-      genBtn.addEventListener("click", ()=>{
-        const v = (shareInput.value || "").trim();
-        if(!v){ showToast("Scrivi prima una frase 🙂"); return; }
-        const link = buildShareUrl(v);
-        showToast("Link generato!");
-        navigator.clipboard?.writeText(link).then(()=>showToast("Link copiato ✅")).catch(()=>{});
-        // aggiorna URL e “ri-esegue”
-        setUrlWithoutReload(v);
-        location.search = "?q=" + encodeURIComponent(v);
+        location.reload();
       });
 
-      copyBtn.addEventListener("click", ()=>{
-        const currentQ = (new URLSearchParams(location.search).get("q") || query).trim();
-        const link = buildShareUrl(currentQ);
-        navigator.clipboard?.writeText(link)
-          .then(()=>showToast("Copiato ✅"))
-          .catch(()=>showToast("Copia non disponibile (usa Ctrl+C)"));
-      });
-
-      // Buttons / shortcuts
+      // send behavior: if user typed something in real input, use it; else use currentQuery
       sendBtn.addEventListener("click", ()=>{
         if(typing) return;
-        showToast("Invio…");
-        // Se l’utente ha scritto nel box share, usiamolo come query “live”
-        const v = (shareInput.value || "").trim();
+        const v = (promptEl.value || "").trim();
+        const q = v || currentQuery;
         if(v){
-          // aggiorna param e rilancia animazione
-          history.replaceState({}, "", buildShareUrl(v));
+          const u = new URL(location.href);
+          u.searchParams.set("q", q);
+          history.replaceState({}, "", u.toString());
           location.reload();
         } else {
-          // solo mostra risultato (già digitato)
+          // already typed; just show
           moveMouseTo(sendBtn);
-          clickMouse().then(()=>showResult());
+          clickMouse().then(()=>showResult(q));
         }
-      });
-
-      againBtn.addEventListener("click", ()=>{
-        // ricomincia mantenendo la query in URL (se c'è), altrimenti random
-        location.reload();
       });
 
       window.addEventListener("keydown", (e)=>{
@@ -480,8 +829,29 @@
         }
       });
 
-      // Start
-      run();
+      againBtn.addEventListener("click", ()=>location.reload());
+
+      copyBtn.addEventListener("click", ()=>{
+        const q = (new URLSearchParams(location.search).get("q") || currentQuery).trim();
+        const link = buildShareUrl(q);
+        navigator.clipboard?.writeText(link)
+          .then(()=>showToast("Link copiato ✅"))
+          .catch(()=>showToast("Copia non disponibile: seleziona e copia manualmente"));
+      });
+
+      genBtn.addEventListener("click", ()=>{
+        const v = (shareInput.value || "").trim();
+        if(!v){ showToast("Scrivi prima una frase 🙂"); return; }
+        const u = new URL(location.href);
+        u.searchParams.set("q", v);
+        history.replaceState({}, "", u.toString());
+        navigator.clipboard?.writeText(buildShareUrl(v)).then(()=>showToast("Link generato e copiato ✅")).catch(()=>showToast("Link generato"));
+        location.reload();
+      });
+
+      // init
+      promptEl.value = "";
+      run(currentQuery);
     })();
   </script>
 </body>
