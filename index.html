@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ChatGPT it (parodia)</title>
+  <style>
+    :root{
+      --bg:#0b0f17; --card:#111827; --muted:#94a3b8; --text:#e5e7eb;
+      --accent:#60a5fa; --accent2:#34d399; --danger:#fb7185;
+      --shadow: 0 18px 55px rgba(0,0,0,.55);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: radial-gradient(1200px 700px at 50% -10%, rgba(96,165,250,.35), transparent 55%),
+                  radial-gradient(900px 500px at 90% 20%, rgba(52,211,153,.22), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .wrap{width:min(980px, 100%);}
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      margin-bottom:14px;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 14px; border-radius:999px;
+      background: rgba(17,24,39,.65);
+      border:1px solid rgba(148,163,184,.2);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      user-select:none;
+      white-space:nowrap;
+    }
+    .dot{width:10px;height:10px;border-radius:50%;background:var(--accent2); box-shadow:0 0 0 6px rgba(52,211,153,.12);}
+    .hint{color:var(--muted); font-size:13px;}
+    .card{
+      position:relative;
+      background: linear-gradient(180deg, rgba(17,24,39,.92), rgba(17,24,39,.72));
+      border:1px solid rgba(148,163,184,.22);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card-inner{padding:22px;}
+    .fake-google{
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(148,163,184,.18);
+      border-radius: 22px;
+      padding:18px;
+      position:relative;
+    }
+    .logo{
+      font-weight:800; letter-spacing:.3px; font-size:24px; line-height:1.1;
+      display:flex; align-items:center; gap:8px; margin-bottom:14px;
+    }
+    .logo span{display:inline-block}
+    .logo .c1{color:#60a5fa}
+    .logo .c2{color:#f472b6}
+    .logo .c3{color:#34d399}
+    .logo .c4{color:#fbbf24}
+    .searchRow{
+      display:flex; gap:10px; align-items:center;
+      flex-wrap:wrap;
+    }
+    .searchBox{
+      flex:1 1 520px;
+      display:flex; align-items:center; gap:10px;
+      background: rgba(0,0,0,.25);
+      border:1px solid rgba(148,163,184,.25);
+      border-radius: 999px;
+      padding: 12px 14px;
+      min-height:48px;
+      position:relative;
+      overflow:hidden;
+    }
+    .magnify{
+      width:18px; height:18px; opacity:.85;
+    }
+    .typed{
+      font-size:16px; letter-spacing:.2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      flex:1;
+    }
+    .caret{
+      width:10px; height:18px;
+      border-left:2px solid rgba(229,231,235,.85);
+      animation: blink 1s step-end infinite;
+      margin-left:2px;
+    }
+    @keyframes blink{50%{opacity:0}}
+    .btn{
+      appearance:none; border:0;
+      padding:12px 14px;
+      border-radius:999px;
+      background: rgba(96,165,250,.2);
+      color:var(--text);
+      border:1px solid rgba(96,165,250,.35);
+      cursor:pointer;
+      font-weight:700;
+      transition: transform .08s ease, background .2s ease, border-color .2s ease;
+      user-select:none;
+    }
+    .btn:hover{background: rgba(96,165,250,.28); border-color: rgba(96,165,250,.48);}
+    .btn:active{transform: translateY(1px) scale(.995);}
+    .btn.secondary{
+      background: rgba(148,163,184,.12);
+      border-color: rgba(148,163,184,.2);
+      font-weight:650;
+    }
+    .btn.secondary:hover{background: rgba(148,163,184,.16);}
+    .btn.good{
+      background: rgba(52,211,153,.16);
+      border-color: rgba(52,211,153,.28);
+    }
+    .btn.good:hover{background: rgba(52,211,153,.22); border-color: rgba(52,211,153,.38);}
+    .result{
+      margin-top:16px;
+      padding:16px;
+      border-radius: 16px;
+      background: rgba(0,0,0,.22);
+      border:1px solid rgba(148,163,184,.18);
+      display:none;
+    }
+    .result.show{display:block; animation: pop .25s ease-out;}
+    @keyframes pop{from{transform:translateY(6px); opacity:0} to{transform:translateY(0); opacity:1}}
+    .result .meta{color:var(--muted); font-size:12.5px; margin-bottom:8px;}
+    .result .title{font-size:18px; font-weight:800; margin:0 0 6px 0;}
+    .result .desc{margin:0; color: rgba(229,231,235,.92); line-height:1.5;}
+    .footer{
+      margin-top:14px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:13px;
+    }
+    a{color:rgba(96,165,250,.95); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .toast{
+      position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+      background: rgba(17,24,39,.92);
+      border:1px solid rgba(148,163,184,.22);
+      padding:10px 12px;
+      border-radius: 999px;
+      box-shadow: 0 18px 55px rgba(0,0,0,.55);
+      color:var(--text);
+      font-size:13px;
+      opacity:0; pointer-events:none;
+      transition: opacity .2s ease, transform .2s ease;
+      z-index:9999;
+    }
+    .toast.show{opacity:1; transform:translateX(-50%) translateY(-4px);}
+
+    /* Mouse finto */
+    .mouse{
+      position:absolute;
+      width:22px; height:32px;
+      border-radius: 12px;
+      border:2px solid rgba(229,231,235,.85);
+      background: rgba(0,0,0,.08);
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      display:none;
+      z-index:50;
+      pointer-events:none;
+    }
+    .mouse:before{
+      content:"";
+      position:absolute;
+      left:50%; top:6px;
+      width:2px; height:8px;
+      background: rgba(229,231,235,.85);
+      transform:translateX(-50%);
+      border-radius: 2px;
+      opacity:.9;
+    }
+    .mouse.clicking{
+      animation: clickPulse .35s ease-in-out 2;
+    }
+    @keyframes clickPulse{
+      0%{transform:scale(1)}
+      50%{transform:scale(.92)}
+      100%{transform:scale(1)}
+    }
+
+    .mini{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .input{
+      flex: 1 1 420px;
+      min-height:44px;
+      border-radius: 12px;
+      border:1px solid rgba(148,163,184,.22);
+      background: rgba(0,0,0,.2);
+      color: var(--text);
+      padding: 10px 12px;
+      outline:none;
+    }
+    .input::placeholder{color:rgba(148,163,184,.8)}
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:12px;
+      padding:2px 8px;
+      border-radius: 999px;
+      border:1px solid rgba(148,163,184,.25);
+      background: rgba(148,163,184,.10);
+      color: rgba(229,231,235,.9);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="badge">
+        <span class="dot"></span>
+        <span><strong>ChatGPT it</strong> <span class="hint">(parodia “google it”)</span></span>
+      </div>
+      <div class="badge">
+        <span class="hint">URL: <span class="kbd">?q=la%20tua%20frase</span></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-inner">
+        <div class="fake-google" id="stage">
+          <div class="logo" aria-label="Logo">
+            <span class="c1">Chat</span><span class="c2">GPT</span><span class="c3">it</span><span class="c4">™</span>
+          </div>
+
+          <div class="searchRow">
+            <div class="searchBox" id="searchBox">
+              <svg class="magnify" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M10.5 19a8.5 8.5 0 1 1 0-17 8.5 8.5 0 0 1 0 17Z" stroke="currentColor" stroke-width="2" opacity=".9"/>
+                <path d="M16.8 16.8 22 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".9"/>
+              </svg>
+              <div class="typed" id="typed"></div>
+              <div class="caret" id="caret"></div>
+            </div>
+
+            <button class="btn" id="sendBtn">Invia</button>
+            <button class="btn secondary" id="againBtn" title="Ricomincia">Ricomincia</button>
+          </div>
+
+          <div class="result" id="result">
+            <div class="meta" id="meta"></div>
+            <h3 class="title" id="title"></h3>
+            <p class="desc" id="desc"></p>
+          </div>
+
+          <div class="mini">
+            <input class="input" id="shareInput" placeholder="Scrivi una frase e premi Genera link…" />
+            <button class="btn good" id="genBtn">Genera link</button>
+            <button class="btn secondary" id="copyBtn">Copia link</button>
+          </div>
+
+          <div class="footer">
+            <div>
+              Ideato da <strong>Vincenzo Di Franco</strong> ·
+              <a href="https://www.linkedin.com/in/vincenzo-di-franco-38216645/" target="_blank" rel="noopener">LinkedIn</a>
+            </div>
+            <div class="hint">
+              Tip: premi <span class="kbd">Invio</span> per “Invia”
+            </div>
+          </div>
+
+          <div class="mouse" id="mouse" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <script>
+    (function(){
+      const $ = (id)=>document.getElementById(id);
+
+      const typedEl = $("typed");
+      const caretEl = $("caret");
+      const sendBtn = $("sendBtn");
+      const againBtn = $("againBtn");
+      const resultEl = $("result");
+      const metaEl = $("meta");
+      const titleEl = $("title");
+      const descEl = $("desc");
+      const mouseEl = $("mouse");
+      const stageEl = $("stage");
+      const shareInput = $("shareInput");
+      const genBtn = $("genBtn");
+      const copyBtn = $("copyBtn");
+      const toastEl = $("toast");
+
+      const params = new URLSearchParams(location.search);
+      const qFromUrl = (params.get("q") || "").trim();
+
+      const defaultQueries = [
+        "come si fa a vivere meglio con il caos?",
+        "perché il codice funziona solo quando lo guardi male?",
+        "ricetta veloce: pasta + bugfix",
+        "cos'è un 'AI Engineer' senza caffè?",
+        "come convincere una query a collaborare?"
+      ];
+
+      function pickQuery(){
+        if(qFromUrl) return qFromUrl;
+        return defaultQueries[Math.floor(Math.random()*defaultQueries.length)];
+      }
+
+      const query = pickQuery();
+
+      // Risposte “goliardiche” ma safe
+      function makeGoliardicAnswer(q){
+        const bank = [
+          `Ho “chatgptato” la cosa e il verdetto è: dipende… ma con abbastanza ironia, si risolve.`,
+          `Risposta ufficiale: sì. Risposta reale: *forse*. Risposta finale: fai una prova e poi negalo con eleganza.`,
+          `Mi risulta che la soluzione più stabile sia: 1) respira 2) spegni e riaccendi 3) raccontalo come strategia.`,
+          `Ho cercato dentro di me (che sono un software) e ho trovato: una battuta, due dubbi e una certezza: serve caffè.`,
+          `Analisi rapida: 80% contesto, 20% audacia. Applica entrambi e poi fingiti sorpreso dal successo.`
+        ];
+        const add = [
+          `\n\nQuery ricevuta: “${q}”.`,
+          `\n\nFonti: fiducia, esperienza collettiva e un pizzico di teatro.`,
+          `\n\nSe non funziona: cambia domanda finché la realtà collabora.`,
+          `\n\nNota: questa risposta è stata approvata dal Dipartimento di Goliardia Applicata.`
+        ];
+        const a = bank[Math.floor(Math.random()*bank.length)];
+        const b = add[Math.floor(Math.random()*add.length)];
+        return a + b;
+      }
+
+      function nowTime(){
+        try{
+          return new Intl.DateTimeFormat("it-IT", {
+            dateStyle:"full", timeStyle:"medium"
+          }).format(new Date());
+        } catch(e){
+          return new Date().toLocaleString();
+        }
+      }
+
+      function showToast(msg){
+        toastEl.textContent = msg;
+        toastEl.classList.add("show");
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(()=>toastEl.classList.remove("show"), 1600);
+      }
+
+      // Typewriter
+      let typing = false;
+      function typeQuery(text, speed=32){
+        typing = true;
+        typedEl.textContent = "";
+        caretEl.style.display = "block";
+        let i = 0;
+        return new Promise(resolve=>{
+          const tick = ()=>{
+            typedEl.textContent = text.slice(0, i);
+            i++;
+            if(i <= text.length){
+              setTimeout(tick, speed + Math.random()*18);
+            } else {
+              typing = false;
+              resolve();
+            }
+          };
+          tick();
+        });
+      }
+
+      // Mouse animation (moves to button and "clicks")
+      function moveMouseTo(el){
+        const stageRect = stageEl.getBoundingClientRect();
+        const r = el.getBoundingClientRect();
+        const targetX = (r.left - stageRect.left) + r.width*0.78;
+        const targetY = (r.top - stageRect.top) + r.height*0.55;
+
+        mouseEl.style.display = "block";
+        mouseEl.style.left = (targetX - 10) + "px";
+        mouseEl.style.top = (targetY - 16) + "px";
+      }
+
+      async function clickMouse(){
+        mouseEl.classList.add("clicking");
+        await new Promise(r=>setTimeout(r, 520));
+        mouseEl.classList.remove("clicking");
+      }
+
+      function showResult(){
+        const answer = makeGoliardicAnswer(query);
+        metaEl.textContent = `Risultato generato · ${nowTime()}`;
+        titleEl.textContent = `“ChatGPT it” → ecco cosa ne esce`;
+        descEl.textContent = answer;
+        resultEl.classList.add("show");
+      }
+
+      async function run(){
+        resultEl.classList.remove("show");
+        mouseEl.style.display = "none";
+
+        await typeQuery(query, 28);
+        await new Promise(r=>setTimeout(r, 250));
+
+        moveMouseTo(sendBtn);
+        await new Promise(r=>setTimeout(r, 220));
+        await clickMouse();
+
+        // piccolo delay “attesa risultato”
+        await new Promise(r=>setTimeout(r, 420));
+        showResult();
+      }
+
+      // Link generator
+      function buildShareUrl(q){
+        const base = location.origin + location.pathname;
+        const u = new URL(base);
+        u.searchParams.set("q", q);
+        return u.toString();
+      }
+
+      function setUrlWithoutReload(q){
+        const u = new URL(location.href);
+        u.searchParams.set("q", q);
+        history.replaceState({}, "", u.toString());
+      }
+
+      genBtn.addEventListener("click", ()=>{
+        const v = (shareInput.value || "").trim();
+        if(!v){ showToast("Scrivi prima una frase 🙂"); return; }
+        const link = buildShareUrl(v);
+        showToast("Link generato!");
+        navigator.clipboard?.writeText(link).then(()=>showToast("Link copiato ✅")).catch(()=>{});
+        // aggiorna URL e “ri-esegue”
+        setUrlWithoutReload(v);
+        location.search = "?q=" + encodeURIComponent(v);
+      });
+
+      copyBtn.addEventListener("click", ()=>{
+        const currentQ = (new URLSearchParams(location.search).get("q") || query).trim();
+        const link = buildShareUrl(currentQ);
+        navigator.clipboard?.writeText(link)
+          .then(()=>showToast("Copiato ✅"))
+          .catch(()=>showToast("Copia non disponibile (usa Ctrl+C)"));
+      });
+
+      // Buttons / shortcuts
+      sendBtn.addEventListener("click", ()=>{
+        if(typing) return;
+        showToast("Invio…");
+        // Se l’utente ha scritto nel box share, usiamolo come query “live”
+        const v = (shareInput.value || "").trim();
+        if(v){
+          // aggiorna param e rilancia animazione
+          history.replaceState({}, "", buildShareUrl(v));
+          location.reload();
+        } else {
+          // solo mostra risultato (già digitato)
+          moveMouseTo(sendBtn);
+          clickMouse().then(()=>showResult());
+        }
+      });
+
+      againBtn.addEventListener("click", ()=>{
+        // ricomincia mantenendo la query in URL (se c'è), altrimenti random
+        location.reload();
+      });
+
+      window.addEventListener("keydown", (e)=>{
+        if(e.key === "Enter"){
+          e.preventDefault();
+          sendBtn.click();
+        }
+      });
+
+      // Start
+      run();
+    })();
+  </script>
+</body>
+</html>
