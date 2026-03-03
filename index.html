@@ -6,22 +6,21 @@
   <title>ChatGPT it (parodia)</title>
   <style>
     :root{
-      --bg: #f6f7fb;
-      --panel: #ffffff;
-      --panel2: #fbfbfe;
-      --border: rgba(15, 23, 42, .10);
-      --border2: rgba(15, 23, 42, .14);
-      --text: #0f172a;
-      --muted: rgba(15, 23, 42, .60);
-      --muted2: rgba(15, 23, 42, .45);
-      --accent: #2563eb;
-      --accent2: #10b981;
-      --shadow: 0 22px 60px rgba(15, 23, 42, .12);
-      --radius: 18px;
-      --radius2: 14px;
+      --bg:#f6f7fb;
+      --panel:#ffffff;
+      --panel2:#fbfbfe;
+      --border:rgba(15,23,42,.10);
+      --border2:rgba(15,23,42,.14);
+      --text:#0f172a;
+      --muted:rgba(15,23,42,.60);
+      --muted2:rgba(15,23,42,.45);
+      --accent:#2563eb;
+      --accent2:#10b981;
+      --shadow:0 22px 60px rgba(15,23,42,.12);
+      --radius:18px;
     }
 
-    *{ box-sizing:border-box; }
+    *{box-sizing:border-box}
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
@@ -29,74 +28,80 @@
         radial-gradient(1200px 700px at 10% -10%, rgba(37,99,235,.14), transparent 55%),
         radial-gradient(900px 500px at 95% 10%, rgba(16,185,129,.10), transparent 60%),
         var(--bg);
-      color: var(--text);
-      min-height: 100vh;
+      color:var(--text);
+      min-height:100vh;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 20px;
+      padding:20px;
     }
 
     .app{
-      width: min(1150px, 100%);
-      height: min(760px, 90vh);
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 26px;
-      box-shadow: var(--shadow);
+      width:min(1150px, 100%);
+      height:min(780px, 92vh);
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:26px;
+      box-shadow:var(--shadow);
       overflow:hidden;
       display:flex;
     }
 
     /* Sidebar */
     .side{
-      width: 320px;
-      background: linear-gradient(180deg, var(--panel2), #fff);
-      border-right: 1px solid var(--border);
+      width:320px;
+      background:linear-gradient(180deg, var(--panel2), #fff);
+      border-right:1px solid var(--border);
       display:flex;
       flex-direction:column;
     }
     .sideTop{
-      padding: 18px 16px;
+      padding:18px 16px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      border-bottom: 1px solid var(--border);
+      border-bottom:1px solid var(--border);
     }
     .brand{
       display:flex;
       align-items:center;
       gap:10px;
-      font-weight: 900;
+      font-weight:950;
       letter-spacing:.2px;
+      min-width:0;
     }
+    .brandTitle{font-size:14px; font-weight:950; margin:0; line-height:1.1;}
     .pill{
       font-size:12px;
-      padding: 6px 10px;
-      border-radius: 999px;
+      padding:6px 10px;
+      border-radius:999px;
       border:1px solid var(--border);
-      color: var(--muted);
-      background: rgba(255,255,255,.7);
+      color:var(--muted);
+      background:rgba(255,255,255,.7);
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      white-space:nowrap;
     }
     .newBtn{
       border:1px solid var(--border);
-      background: #fff;
-      border-radius: 12px;
-      padding: 10px 12px;
+      background:#fff;
+      border-radius:12px;
+      padding:10px 12px;
       cursor:pointer;
-      font-weight: 750;
-      color: var(--text);
+      font-weight:800;
+      color:var(--text);
       display:flex;
       align-items:center;
       gap:8px;
       transition: transform .08s ease, box-shadow .2s ease;
+      user-select:none;
     }
-    .newBtn:hover{ box-shadow: 0 12px 28px rgba(15,23,42,.10); }
-    .newBtn:active{ transform: translateY(1px); }
-
+    .newBtn:hover{box-shadow:0 12px 28px rgba(15,23,42,.10)}
+    .newBtn:active{transform:translateY(1px)}
     .chatList{
-      padding: 12px;
+      padding:12px;
       overflow:auto;
       flex:1;
     }
@@ -104,37 +109,37 @@
       display:flex;
       align-items:flex-start;
       gap:10px;
-      padding: 12px;
-      border-radius: 14px;
+      padding:12px;
+      border-radius:14px;
       border:1px solid transparent;
       cursor:pointer;
       user-select:none;
     }
     .chatItem:hover{
-      background: rgba(37,99,235,.05);
-      border-color: rgba(37,99,235,.12);
+      background:rgba(37,99,235,.05);
+      border-color:rgba(37,99,235,.12);
     }
     .chatItem.active{
-      background: rgba(37,99,235,.08);
-      border-color: rgba(37,99,235,.18);
+      background:rgba(37,99,235,.08);
+      border-color:rgba(37,99,235,.18);
     }
     .avatar{
       width:34px;
       height:34px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, rgba(37,99,235,.25), rgba(16,185,129,.18));
+      border-radius:12px;
+      background:linear-gradient(135deg, rgba(37,99,235,.25), rgba(16,185,129,.18));
       border:1px solid rgba(37,99,235,.18);
       display:flex;
       align-items:center;
       justify-content:center;
-      font-weight: 900;
-      color: rgba(15,23,42,.75);
-      flex: 0 0 auto;
+      font-weight:950;
+      color:rgba(15,23,42,.75);
+      flex:0 0 auto;
     }
-    .chatMeta{ min-width:0; }
+    .chatMeta{min-width:0}
     .chatTitle{
-      font-weight: 850;
-      font-size: 14px;
+      font-weight:900;
+      font-size:14px;
       margin:0 0 3px 0;
       white-space:nowrap;
       overflow:hidden;
@@ -142,17 +147,17 @@
     }
     .chatPreview{
       margin:0;
-      font-size: 12.5px;
-      color: var(--muted);
+      font-size:12.5px;
+      color:var(--muted);
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
     }
     .sideBottom{
-      padding: 12px 14px;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 12.5px;
+      padding:12px 14px;
+      border-top:1px solid var(--border);
+      color:var(--muted);
+      font-size:12.5px;
       display:flex;
       justify-content:space-between;
       gap:10px;
@@ -165,12 +170,11 @@
       display:flex;
       flex-direction:column;
       position:relative;
-      background: #fff;
+      background:#fff;
     }
-
     .mainTop{
-      padding: 14px 18px;
-      border-bottom: 1px solid var(--border);
+      padding:14px 18px;
+      border-bottom:1px solid var(--border);
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -182,221 +186,240 @@
       gap:10px;
       min-width:0;
     }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background:rgba(37,99,235,.55);
+      box-shadow:0 0 0 8px rgba(37,99,235,.10);
+      flex:0 0 auto;
+    }
     .crumb h1{
-      font-size: 15px;
+      font-size:15px;
       margin:0;
-      font-weight: 900;
-      letter-spacing: .2px;
+      font-weight:950;
+      letter-spacing:.2px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
     }
     .sub{
-      color: var(--muted);
-      font-size: 12.5px;
+      color:var(--muted);
+      font-size:12.5px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
     }
     .tools{
-      display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
     }
     .btn{
       border:1px solid var(--border);
-      background: #fff;
-      border-radius: 999px;
-      padding: 9px 12px;
+      background:#fff;
+      border-radius:999px;
+      padding:9px 12px;
       cursor:pointer;
-      font-weight: 750;
-      color: var(--text);
+      font-weight:800;
+      color:var(--text);
       transition: transform .08s ease, box-shadow .2s ease, border-color .2s ease;
+      user-select:none;
     }
-    .btn:hover{ box-shadow: 0 14px 30px rgba(15,23,42,.10); border-color: var(--border2); }
-    .btn:active{ transform: translateY(1px); }
+    .btn:hover{box-shadow:0 14px 30px rgba(15,23,42,.10); border-color:var(--border2)}
+    .btn:active{transform:translateY(1px)}
     .btn.primary{
-      border-color: rgba(37,99,235,.28);
-      background: rgba(37,99,235,.08);
-      color: rgba(37,99,235,1);
+      border-color:rgba(37,99,235,.28);
+      background:rgba(37,99,235,.08);
+      color:rgba(37,99,235,1);
+    }
+    .btn.good{
+      border-color:rgba(16,185,129,.25);
+      background:rgba(16,185,129,.08);
+      color:rgba(16,185,129,1);
     }
 
     .stage{
       position:relative;
-      padding: 18px;
+      padding:18px;
       overflow:auto;
       flex:1;
     }
 
-    /* Satire banner */
-    .oil-banner{
-      display:flex;
-      gap:14px;
-      align-items:stretch;
-      justify-content:space-between;
-      padding:14px 14px;
-      border-radius: 16px;
-      background:
-        radial-gradient(700px 220px at 10% 10%, rgba(251,191,36,.18), transparent 60%),
-        radial-gradient(700px 220px at 90% 30%, rgba(244,63,94,.14), transparent 60%),
-        rgba(15,23,42,.03);
-      border:1px solid var(--border);
-      margin-bottom: 14px;
-    }
-    .oil-left{flex:1 1 auto; min-width: 260px;}
-    .oil-title{font-weight: 950; margin-bottom:6px;}
-    .oil-text{color: rgba(15,23,42,.85); line-height:1.45;}
-    .oil-chant{
-      display:inline-block;
-      margin-left:6px;
-      font-weight: 950;
-      color: rgba(234,179,8,1);
-      animation: chant .55s infinite;
-    }
-    @keyframes chant{ 0%{transform:translateY(0)} 25%{transform:translateY(-1px)} 50%{transform:translateY(0)} 75%{transform:translateY(1px)} 100%{transform:translateY(0)} }
-    .oil-sub{ margin-top:6px; font-size:12.5px; color: var(--muted); }
-    .oil-right{
-      flex: 0 0 auto;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      border-radius: 14px;
-      padding:6px 8px;
-      background: rgba(255,255,255,.75);
-      border:1px solid var(--border);
-    }
-    @media (max-width: 840px){
-      .side{ display:none; }
-      .app{ height: auto; min-height: 80vh; }
-    }
-    @media (max-width: 720px){
-      .oil-banner{ flex-direction:column; }
-      .oil-right{ justify-content:flex-start; }
-    }
-
-    /* “Chat-like” output cards */
+    /* Bubble cards */
     .bubble{
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px 14px;
-      box-shadow: 0 14px 38px rgba(15,23,42,.08);
-      margin-bottom: 12px;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:14px;
+      box-shadow:0 14px 38px rgba(15,23,42,.08);
+      margin-bottom:12px;
     }
     .bubble .meta{
-      color: var(--muted);
-      font-size: 12.5px;
-      margin-bottom: 8px;
+      color:var(--muted);
+      font-size:12.5px;
+      margin-bottom:8px;
     }
     .bubble .title{
-      margin: 0 0 8px 0;
-      font-size: 16px;
-      font-weight: 950;
+      margin:0 0 8px 0;
+      font-size:16px;
+      font-weight:950;
       letter-spacing:.1px;
     }
     .bubble .desc{
       margin:0;
-      color: rgba(15,23,42,.88);
-      line-height: 1.55;
-      white-space: pre-wrap;
+      color:rgba(15,23,42,.88);
+      line-height:1.55;
+      white-space:pre-wrap;
     }
-
-    /* Input bar */
-    .composer{
-      padding: 14px 18px;
-      border-top: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,1));
-    }
-    .bar{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      border: 1px solid var(--border2);
-      background: #fff;
-      border-radius: 999px;
-      padding: 10px 12px;
-      box-shadow: 0 16px 36px rgba(15,23,42,.08);
-    }
-    .prompt{
-      flex:1;
-      min-height: 26px;
-      border:0;
-      outline:none;
-      font-size: 15px;
-      color: var(--text);
-      background: transparent;
-    }
-    .prompt::placeholder{ color: rgba(15,23,42,.45); }
-    .send{
-      width: 44px;
-      height: 44px;
-      border-radius: 999px;
-      border: 1px solid rgba(37,99,235,.25);
-      background: rgba(37,99,235,.10);
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      transition: transform .08s ease, box-shadow .2s ease, background .2s ease;
-    }
-    .send:hover{ box-shadow: 0 16px 34px rgba(37,99,235,.14); background: rgba(37,99,235,.13); }
-    .send:active{ transform: translateY(1px); }
-    .send svg{ width:18px; height:18px; color: rgba(37,99,235,1); }
-
-    /* Typewriter overlay inside prompt (fake typing) */
-    .typeLayer{
-      position:relative;
-      flex:1;
-      display:flex;
-      align-items:center;
-      min-height: 26px;
-    }
-    .typed{
-      font-size: 15px;
-      color: rgba(15,23,42,.92);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-    }
-    .caret{
-      width: 10px;
-      height: 18px;
-      border-left: 2px solid rgba(15,23,42,.65);
-      margin-left: 2px;
-      animation: blink 1s step-end infinite;
-    }
-    @keyframes blink{50%{opacity:0}}
 
     /* Share row */
     .shareRow{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      margin-top: 10px;
+      margin-top:10px;
     }
     .miniInput{
-      flex: 1 1 360px;
-      min-height: 42px;
-      border-radius: 12px;
+      flex:1 1 360px;
+      min-height:42px;
+      border-radius:12px;
       border:1px solid var(--border);
-      background: #fff;
-      color: var(--text);
-      padding: 10px 12px;
+      background:#fff;
+      color:var(--text);
+      padding:10px 12px;
       outline:none;
     }
-    .miniInput::placeholder{ color: rgba(15,23,42,.45); }
+    .miniInput::placeholder{color:rgba(15,23,42,.45)}
+
+    /* Call-to-action block */
+    .cta{
+      border:1px solid rgba(37,99,235,.18);
+      background:
+        radial-gradient(900px 260px at 10% 0%, rgba(37,99,235,.10), transparent 60%),
+        radial-gradient(700px 240px at 90% 10%, rgba(16,185,129,.08), transparent 60%),
+        rgba(15,23,42,.02);
+      border-radius: var(--radius);
+      padding:14px;
+    }
+    .ctaTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .ctaTitle{
+      margin:0;
+      font-size:15px;
+      font-weight:950;
+      letter-spacing:.1px;
+    }
+    .ctaText{
+      margin:8px 0 0 0;
+      color:rgba(15,23,42,.82);
+      line-height:1.55;
+      white-space:pre-wrap;
+    }
+    .ctaSmall{
+      margin-top:8px;
+      font-size:12.5px;
+      color:var(--muted);
+    }
+    .finalLine{
+      margin-top:10px;
+      font-weight:900;
+      color:rgba(15,23,42,.80);
+    }
 
     /* Footer credit */
     .credit{
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: 12.5px;
+      margin-top:10px;
+      color:var(--muted);
+      font-size:12.5px;
       display:flex;
       justify-content:space-between;
       gap:10px;
       flex-wrap:wrap;
       align-items:center;
     }
-    a{ color: rgba(37,99,235,1); text-decoration:none; }
-    a:hover{ text-decoration:underline; }
+    a{color:rgba(37,99,235,1); text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    /* Composer bar */
+    .composer{
+      padding:14px 18px;
+      border-top:1px solid var(--border);
+      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,1));
+    }
+    .bar{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      border:1px solid var(--border2);
+      background:#fff;
+      border-radius:999px;
+      padding:10px 12px;
+      box-shadow:0 16px 36px rgba(15,23,42,.08);
+    }
+
+    /* Fake typed layer */
+    .typeLayer{
+      position:relative;
+      flex:1;
+      display:flex;
+      align-items:center;
+      min-height:26px;
+      min-width:0;
+    }
+    .typed{
+      font-size:15px;
+      color:rgba(15,23,42,.92);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:100%;
+    }
+    .caret{
+      width:10px;
+      height:18px;
+      border-left:2px solid rgba(15,23,42,.65);
+      margin-left:2px;
+      animation:blink 1s step-end infinite;
+      flex:0 0 auto;
+    }
+    @keyframes blink{50%{opacity:0}}
+
+    /* Real input (optional override) */
+    .prompt{
+      width: 220px;
+      max-width: 40%;
+      min-height:26px;
+      border:0;
+      outline:none;
+      font-size:15px;
+      color:var(--text);
+      background:transparent;
+    }
+    .prompt::placeholder{color:rgba(15,23,42,.45)}
+
+    /* Send button with arrow */
+    .send{
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      border:1px solid rgba(37,99,235,.25);
+      background:rgba(37,99,235,.10);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition: transform .08s ease, box-shadow .2s ease, background .2s ease;
+      user-select:none;
+      flex:0 0 auto;
+    }
+    .send:hover{box-shadow:0 16px 34px rgba(37,99,235,.14); background:rgba(37,99,235,.13)}
+    .send:active{transform:translateY(1px)}
+    .send svg{width:18px;height:18px;color:rgba(37,99,235,1)}
 
     /* Toast */
     .toast{
@@ -404,28 +427,28 @@
       left:50%;
       bottom:18px;
       transform:translateX(-50%);
-      background: rgba(15,23,42,.92);
+      background:rgba(15,23,42,.92);
       color:#fff;
       border:1px solid rgba(255,255,255,.18);
       padding:10px 12px;
-      border-radius: 999px;
-      box-shadow: 0 22px 60px rgba(15,23,42,.25);
+      border-radius:999px;
+      box-shadow:0 22px 60px rgba(15,23,42,.25);
       font-size:13px;
       opacity:0;
       pointer-events:none;
       transition: opacity .2s ease, transform .2s ease;
       z-index:9999;
     }
-    .toast.show{ opacity:1; transform:translateX(-50%) translateY(-4px); }
+    .toast.show{opacity:1; transform:translateX(-50%) translateY(-4px)}
 
     /* Mouse fake */
     .mouse{
       position:absolute;
-      width:22px; height:32px;
-      border-radius: 12px;
+      width:22px;height:32px;
+      border-radius:12px;
       border:2px solid rgba(15,23,42,.65);
-      background: rgba(255,255,255,.65);
-      box-shadow: 0 14px 34px rgba(15,23,42,.12);
+      background:rgba(255,255,255,.65);
+      box-shadow:0 14px 34px rgba(15,23,42,.12);
       display:none;
       z-index:50;
       pointer-events:none;
@@ -434,28 +457,30 @@
       content:"";
       position:absolute;
       left:50%; top:6px;
-      width:2px; height:8px;
-      background: rgba(15,23,42,.65);
+      width:2px;height:8px;
+      background:rgba(15,23,42,.65);
       transform:translateX(-50%);
-      border-radius: 2px;
+      border-radius:2px;
       opacity:.9;
     }
-    .mouse.clicking{ animation: clickPulse .35s ease-in-out 2; }
-    @keyframes clickPulse{
-      0%{transform:scale(1)}
-      50%{transform:scale(.92)}
-      100%{transform:scale(1)}
-    }
+    .mouse.clicking{animation:clickPulse .35s ease-in-out 2}
+    @keyframes clickPulse{0%{transform:scale(1)} 50%{transform:scale(.92)} 100%{transform:scale(1)}}
 
     /* tiny kbd */
     .kbd{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
       font-size:12px;
       padding:2px 8px;
-      border-radius: 999px;
+      border-radius:999px;
       border:1px solid var(--border);
-      background: rgba(15,23,42,.03);
-      color: rgba(15,23,42,.75);
+      background:rgba(15,23,42,.03);
+      color:rgba(15,23,42,.75);
+    }
+
+    @media (max-width: 840px){
+      .side{display:none}
+      .app{height:auto; min-height:80vh}
+      .prompt{max-width:55%}
     }
   </style>
 </head>
@@ -464,9 +489,9 @@
     <aside class="side">
       <div class="sideTop">
         <div class="brand">
-          <span class="avatar" style="width:30px;height:30px;border-radius:10px;">C</span>
-          <div>
-            <div style="font-size:14px; font-weight:950;">ChatGPT it</div>
+          <div class="avatar" style="width:30px;height:30px;border-radius:10px;">C</div>
+          <div style="min-width:0;">
+            <p class="brandTitle">ChatGPT it</p>
             <div class="pill">parodia · <span class="kbd">?q=...</span></div>
           </div>
         </div>
@@ -476,21 +501,22 @@
       </div>
 
       <div class="chatList" id="chatList">
-        <!-- fake chats -->
-        <div class="chatItem active" data-q="cos'è chatgpt it?">
+        <div class="chatItem active" data-q="ti è piaciuto? mettimi una stella ⭐">
+          <div class="avatar">⭐</div>
+          <div class="chatMeta">
+            <p class="chatTitle">Mettimi una stella</p>
+            <p class="chatPreview">call to action, ma con stile</p>
+          </div>
+        </div>
+
+        <div class="chatItem" data-q="cos'è chatgpt it? (google it vibes)">
           <div class="avatar">🧠</div>
           <div class="chatMeta">
             <p class="chatTitle">ChatGPT it</p>
             <p class="chatPreview">scrivi la frase e aspetta il “risultato”…</p>
           </div>
         </div>
-        <div class="chatItem" data-q="come riparare una query che non vuole collaborare">
-          <div class="avatar">🧩</div>
-          <div class="chatMeta">
-            <p class="chatTitle">Query ribelle</p>
-            <p class="chatPreview">fix, rituali e piccoli compromessi</p>
-          </div>
-        </div>
+
         <div class="chatItem" data-q="perché il codice funziona solo quando lo guardi male?">
           <div class="avatar">😑</div>
           <div class="chatMeta">
@@ -498,13 +524,15 @@
             <p class="chatPreview">storie vere (o quasi) di debug</p>
           </div>
         </div>
-        <div class="chatItem" data-q="dimmi una verità scomoda sul lavoro al pc">
-          <div class="avatar">🪑</div>
+
+        <div class="chatItem" data-q="come riparare una query che non vuole collaborare">
+          <div class="avatar">🧩</div>
           <div class="chatMeta">
-            <p class="chatTitle">Vita sedentaria</p>
-            <p class="chatPreview">spalle, occhi, e caffeina</p>
+            <p class="chatTitle">Query ribelle</p>
+            <p class="chatPreview">fix, rituali e piccoli compromessi</p>
           </div>
         </div>
+
         <div class="chatItem" data-q="ricetta: pasta + bugfix + dignità">
           <div class="avatar">🍝</div>
           <div class="chatMeta">
@@ -512,11 +540,12 @@
             <p class="chatPreview">ingredienti minimi, sapore massimo</p>
           </div>
         </div>
+
         <div class="chatItem" data-q="dig it dig it (mode: goliardia)">
-          <div class="avatar">⛽</div>
+          <div class="avatar">🪨</div>
           <div class="chatMeta">
-            <p class="chatTitle">Petrol Mode</p>
-            <p class="chatPreview">promesse energetiche discutibili</p>
+            <p class="chatTitle">Dig it</p>
+            <p class="chatPreview">premi invia e fai finta di capire</p>
           </div>
         </div>
       </div>
@@ -533,7 +562,7 @@
     <main class="main">
       <header class="mainTop">
         <div class="crumb">
-          <div style="width:10px;height:10px;border-radius:50%;background:rgba(37,99,235,.55); box-shadow:0 0 0 8px rgba(37,99,235,.10);"></div>
+          <div class="dot"></div>
           <div style="min-width:0;">
             <h1 id="pageTitle">Scrivi la frase. Aspetta il risultato.</h1>
             <div class="sub" id="pageSub">Parodia. Nessuna pretesa. Massima goliardia controllata.</div>
@@ -546,43 +575,12 @@
       </header>
 
       <section class="stage" id="stage">
-        <!-- SATIRE BANNER -->
-        <div class="oil-banner" role="note" aria-label="Avvertimento satirico">
-          <div class="oil-left">
-            <div class="oil-title">⚠️ Petrol Pledge™</div>
-            <div class="oil-text">
-              Ci assicuriamo che l’energia usata per questa pagina sia <strong>100% fossile</strong>.
-              Vogliamo <strong>più petrolio per i nostri figli</strong>. <span class="oil-chant">DIG IT · DIG IT</span>
-            </div>
-            <div class="oil-sub">(Parodia. Non è un invito reale. È satira.)</div>
-          </div>
-
-          <!-- caricatura SVG “Trump che ride” (stile cartoon, non foto) -->
-          <div class="oil-right" aria-hidden="true" title="Trump che ride (caricatura)">
-            <svg viewBox="0 0 140 120" width="140" height="120">
-              <circle cx="70" cy="52" r="34" fill="rgba(15,23,42,.06)"/>
-              <circle cx="70" cy="52" r="33" fill="rgba(255,255,255,.92)"/>
-              <path d="M42 44c10-18 44-26 66-8-10-2-18 4-22 10 6 0 10 2 14 6-12-2-22 2-30 10-2-8-10-14-28-18Z"
-                    fill="rgba(234,179,8,.95)"/>
-              <circle cx="58" cy="54" r="3" fill="rgba(15,23,42,.65)"/>
-              <circle cx="82" cy="54" r="3" fill="rgba(15,23,42,.65)"/>
-              <path d="M52 68c10 14 26 14 36 0" fill="none" stroke="rgba(15,23,42,.65)" stroke-width="4" stroke-linecap="round"/>
-              <path d="M56 70c8 10 20 10 28 0" fill="none" stroke="rgba(244,63,94,.70)" stroke-width="3" stroke-linecap="round"/>
-              <path d="M70 86 58 114h24L70 86Z" fill="rgba(244,63,94,.78)"/>
-              <path d="M28 118c8-22 28-30 42-30s34 8 42 30" fill="rgba(15,23,42,.88)"/>
-              <text x="70" y="18" text-anchor="middle" font-size="12" fill="rgba(15,23,42,.55)" font-weight="900">
-                TRUMP 😂
-              </text>
-            </svg>
-          </div>
-        </div>
-
         <div class="bubble" id="bubbleIntro">
           <div class="meta">Come funziona</div>
           <h3 class="title">“ChatGPT it”</h3>
           <p class="desc">
 Scrivi una frase (o apri questa pagina con <span class="kbd">?q=la%20tua%20frase</span>).
-Poi guarda il mouse che clicca “Invia” e aspettati una risposta goliardica.
+Guarda il mouse che clicca “Invia” e aspettati una risposta goliardica.
           </p>
 
           <div class="shareRow">
@@ -603,6 +601,23 @@ Poi guarda il mouse che clicca “Invia” e aspettati una risposta goliardica.
           <div class="meta" id="meta"></div>
           <h3 class="title" id="title"></h3>
           <p class="desc" id="desc"></p>
+
+          <!-- CTA + frase finale in basso -->
+          <div style="height:12px"></div>
+          <div class="cta" id="ctaBlock">
+            <div class="ctaTop">
+              <div>
+                <p class="ctaTitle">Ti è piaciuto? Mettimi una stella. ⭐</p>
+                <p class="ctaText" id="ctaText"></p>
+                <div class="ctaSmall">(Satira, ma con un fondo di realtà.)</div>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                <button class="btn good" id="starBtn">⭐ Star su GitHub</button>
+                <button class="btn" id="repoBtn">Apri repo</button>
+              </div>
+            </div>
+            <div class="finalLine" id="finalLine">Se ti fa ridere, bene. Se ti fa pensare, meglio.</div>
+          </div>
         </div>
 
         <div class="mouse" id="mouse" aria-hidden="true"></div>
@@ -610,14 +625,12 @@ Poi guarda il mouse che clicca “Invia” e aspettati una risposta goliardica.
 
       <footer class="composer">
         <div class="bar">
-          <!-- fake typed layer (so user sees typing effect) -->
           <div class="typeLayer">
             <div class="typed" id="typed"></div>
             <div class="caret" id="caret"></div>
           </div>
 
-          <!-- real input for user override -->
-          <input class="prompt" id="prompt" placeholder="Scrivi qui… (oppure usa ?q=...)" autocomplete="off" />
+          <input class="prompt" id="prompt" placeholder="Oppure scrivi qui…" autocomplete="off" />
 
           <button class="send" id="sendBtn" title="Invia">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -634,6 +647,9 @@ Poi guarda il mouse che clicca “Invia” e aspettati una risposta goliardica.
 
   <script>
     (function(){
+      // CHANGE THIS if your repo name differs
+      const GITHUB_REPO_URL = "https://github.com/vincenzo85/chat-gpt-it";
+
       const $ = (id)=>document.getElementById(id);
 
       const typedEl = $("typed");
@@ -642,10 +658,9 @@ Poi guarda il mouse che clicca “Invia” e aspettati una risposta goliardica.
       const sendBtn = $("sendBtn");
       const againBtn = $("againBtn");
       const copyBtn = $("copyBtn");
-      const genBtn = $("genBtn");
+      const genBtn  = $("genBtn");
       const shareInput = $("shareInput");
       const toastEl = $("toast");
-      const chatList = $("chatList");
 
       const bubbleIntro = $("bubbleIntro");
       const bubbleResult = $("bubbleResult");
@@ -653,6 +668,11 @@ Poi guarda il mouse che clicca “Invia” e aspettati una risposta goliardica.
       const titleEl = $("title");
       const descEl = $("desc");
 
+      const ctaTextEl = $("ctaText");
+      const starBtn = $("starBtn");
+      const repoBtn = $("repoBtn");
+
+      const chatList = $("chatList");
       const mouseEl = $("mouse");
       const stageEl = $("stage");
       const pageTitle = $("pageTitle");
@@ -661,11 +681,12 @@ Poi guarda il mouse che clicca “Invia” e aspettati una risposta goliardica.
       const qFromUrl = (params.get("q") || "").trim();
 
       const defaults = [
+        "ti è piaciuto? mettimi una stella ⭐",
         "cos'è chatgpt it? (google it vibes)",
         "perché il codice funziona solo quando lo guardi male?",
         "come riparare una query che non vuole collaborare",
-        "dig it dig it (mode: goliardia)",
-        "ricetta: pasta + bugfix + dignità"
+        "ricetta: pasta + bugfix + dignità",
+        "dig it dig it (mode: goliardia)"
       ];
 
       function pickQuery(){
@@ -690,20 +711,36 @@ Poi guarda il mouse che clicca “Invia” e aspettati una risposta goliardica.
         showToast._t = setTimeout(()=>toastEl.classList.remove("show"), 1600);
       }
 
+      function buildShareUrl(q){
+        const base = location.origin + location.pathname;
+        const u = new URL(base);
+        u.searchParams.set("q", q);
+        return u.toString();
+      }
+
+      // Safe, “pungente ma elegante”
+      function ctaCopy(){
+        return [
+          "Nessuna intelligenza artificiale è stata maltrattata per ottenere questa pagina.",
+          "Nel backstage, però, c’è ancora lavoro umano invisibile: annotatori e moderatori che aiutano ad addestrare (e rendere sicuri) i modelli.",
+          "Non sempre pagati o riconosciuti quanto meriterebbero."
+        ].join("\n");
+      }
+
       // goliardic answer (safe)
       function makeAnswer(q){
         const bank = [
-          `Ho “chatgptato” la cosa e il verdetto è: dipende… ma con abbastanza ironia, si risolve.`,
-          `Risposta ufficiale: sì. Risposta reale: forse. Risposta finale: fai una prova e poi raccontala come strategia.`,
-          `Soluzione più stabile: 1) respira 2) spegni e riaccendi 3) dichiaralo “approccio iterativo”.`,
-          `Ho cercato dentro di me (che sono un software) e ho trovato: una battuta, due dubbi e una certezza: serve caffè.`,
-          `Analisi rapida: 80% contesto, 20% audacia. Applica entrambi e poi fingiti sorpreso dal successo.`
+          "Ho “chatgptato” la cosa e il verdetto è: dipende… ma con abbastanza ironia, si risolve.",
+          "Risposta ufficiale: sì. Risposta reale: forse. Risposta finale: fai una prova e poi raccontala come strategia.",
+          "Soluzione più stabile: 1) respira 2) spegni e riaccendi 3) dichiaralo “approccio iterativo”.",
+          "Ho cercato dentro di me (che sono un software) e ho trovato: una battuta, due dubbi e una certezza: serve caffè.",
+          "Analisi rapida: 80% contesto, 20% audacia. Applica entrambi e poi fingiti sorpreso dal successo."
         ];
         const add = [
           `\n\nQuery ricevuta: “${q}”.`,
-          `\n\nFonti: fiducia, esperienza collettiva e un pizzico di teatro.`,
-          `\n\nSe non funziona: cambia domanda finché la realtà collabora.`,
-          `\n\nNota: risposta approvata dal Dipartimento di Goliardia Applicata.`
+          "\n\nFonti: fiducia, esperienza collettiva e un pizzico di teatro.",
+          "\n\nSe non funziona: cambia domanda finché la realtà collabora.",
+          "\n\nNota: risposta approvata dal Dipartimento di Goliardia Applicata."
         ];
         return bank[Math.floor(Math.random()*bank.length)] + add[Math.floor(Math.random()*add.length)];
       }
@@ -735,7 +772,7 @@ Poi guarda il mouse che clicca “Invia” e aspettati una risposta goliardica.
         const stageRect = stageEl.getBoundingClientRect();
         const r = el.getBoundingClientRect();
         const targetX = (r.left - stageRect.left) + r.width*0.65;
-        const targetY = (r.top - stageRect.top) + r.height*0.55;
+        const targetY = (r.top  - stageRect.top)  + r.height*0.55;
         mouseEl.style.display = "block";
         mouseEl.style.left = (targetX - 10) + "px";
         mouseEl.style.top  = (targetY - 16) + "px";
@@ -746,29 +783,25 @@ Poi guarda il mouse che clicca “Invia” e aspettati una risposta goliardica.
         mouseEl.classList.remove("clicking");
       }
 
-      function showResult(q){
-        const answer = makeAnswer(q);
-        metaEl.textContent = `Risultato generato · ${nowTime()}`;
-        titleEl.textContent = `“ChatGPT it” → ecco cosa ne esce`;
-        descEl.textContent = answer;
-
-        bubbleIntro.style.display = "none";
-        bubbleResult.style.display = "block";
-        pageTitle.textContent = "Risposta goliardica (non vincolante)";
-      }
-
-      function buildShareUrl(q){
-        const base = location.origin + location.pathname;
-        const u = new URL(base);
-        u.searchParams.set("q", q);
-        return u.toString();
-      }
-
       function setActiveChatByText(q){
         document.querySelectorAll(".chatItem").forEach(el=>{
           const is = (el.getAttribute("data-q") || "") === q;
           el.classList.toggle("active", is);
         });
+      }
+
+      function showResult(q){
+        const answer = makeAnswer(q);
+
+        metaEl.textContent  = `Risultato generato · ${nowTime()}`;
+        titleEl.textContent = `“ChatGPT it” → ecco cosa ne esce`;
+        descEl.textContent  = answer;
+
+        ctaTextEl.textContent = ctaCopy();
+
+        bubbleIntro.style.display = "none";
+        bubbleResult.style.display = "block";
+        pageTitle.textContent = "Risposta goliardica (non vincolante)";
       }
 
       async function run(q){
@@ -780,11 +813,9 @@ Poi guarda il mouse che clicca “Invia” e aspettati una risposta goliardica.
         pageTitle.textContent = "Scrivi la frase. Aspetta il risultato.";
         mouseEl.style.display = "none";
 
-        // type into fake layer
         await typeQuery(q, 24);
         await new Promise(r=>setTimeout(r, 260));
 
-        // move mouse to send + click
         moveMouseTo(sendBtn);
         await new Promise(r=>setTimeout(r, 220));
         await clickMouse();
@@ -793,7 +824,7 @@ Poi guarda il mouse che clicca “Invia” e aspettati una risposta goliardica.
         showResult(q);
       }
 
-      // sidebar click -> set URL + reload (simpler, deterministic)
+      // Sidebar click -> set URL + reload
       chatList.addEventListener("click", (e)=>{
         const item = e.target.closest(".chatItem");
         if(!item) return;
@@ -805,7 +836,16 @@ Poi guarda il mouse che clicca “Invia” e aspettati una risposta goliardica.
         location.reload();
       });
 
-      // send behavior: if user typed something in real input, use it; else use currentQuery
+      // New chat -> random
+      $("newChatBtn").addEventListener("click", ()=>{
+        const q = defaults[Math.floor(Math.random()*defaults.length)];
+        const u = new URL(location.href);
+        u.searchParams.set("q", q);
+        history.replaceState({}, "", u.toString());
+        location.reload();
+      });
+
+      // Send: if user typed something, use it; else use currentQuery
       sendBtn.addEventListener("click", ()=>{
         if(typing) return;
         const v = (promptEl.value || "").trim();
@@ -816,7 +856,6 @@ Poi guarda il mouse che clicca “Invia” e aspettati una risposta goliardica.
           history.replaceState({}, "", u.toString());
           location.reload();
         } else {
-          // already typed; just show
           moveMouseTo(sendBtn);
           clickMouse().then(()=>showResult(q));
         }
@@ -845,9 +884,21 @@ Poi guarda il mouse che clicca “Invia” e aspettati una risposta goliardica.
         const u = new URL(location.href);
         u.searchParams.set("q", v);
         history.replaceState({}, "", u.toString());
-        navigator.clipboard?.writeText(buildShareUrl(v)).then(()=>showToast("Link generato e copiato ✅")).catch(()=>showToast("Link generato"));
+        navigator.clipboard?.writeText(buildShareUrl(v))
+          .then(()=>showToast("Link generato e copiato ✅"))
+          .catch(()=>showToast("Link generato"));
         location.reload();
       });
+
+      // Star + Repo buttons
+      function openRepo(){
+        window.open(GITHUB_REPO_URL, "_blank", "noopener,noreferrer");
+      }
+      starBtn.addEventListener("click", ()=>{
+        openRepo();
+        showToast("Apri GitHub → Star ⭐ (grazie!)");
+      });
+      repoBtn.addEventListener("click", openRepo);
 
       // init
       promptEl.value = "";
