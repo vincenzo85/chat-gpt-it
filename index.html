@@ -10,14 +10,17 @@
       --panel:#ffffff;
       --panel2:#fbfbfe;
       --border:rgba(15,23,42,.10);
-      --border2:rgba(15,23,42,.14);
+      --border2:rgba(15,23,42,.16);
       --text:#0f172a;
       --muted:rgba(15,23,42,.60);
       --accent:#2563eb;
       --accent2:#10b981;
+      --amber:#f59e0b;
+      --rose:#fb7185;
       --shadow:0 22px 60px rgba(15,23,42,.12);
       --radius:18px;
     }
+
     *{box-sizing:border-box}
     body{
       margin:0;
@@ -35,8 +38,8 @@
     }
 
     .app{
-      width:min(1150px, 100%);
-      height:min(800px, 92vh);
+      width:min(1180px, 100%);
+      height:min(820px, 92vh);
       background:var(--panel);
       border:1px solid var(--border);
       border-radius:26px;
@@ -46,7 +49,7 @@
       position:relative;
     }
 
-    /* mobile drawer overlay */
+    /* overlay for mobile drawer */
     .overlay{
       position:fixed; inset:0;
       background:rgba(15,23,42,.35);
@@ -70,7 +73,7 @@
       display:flex; align-items:center; justify-content:space-between; gap:10px;
       border-bottom:1px solid var(--border);
     }
-    .brand{display:flex; align-items:center; gap:10px; font-weight:950; letter-spacing:.2px; min-width:0;}
+    .brand{display:flex; align-items:center; gap:10px; min-width:0;}
     .avatar{
       width:34px; height:34px; border-radius:12px;
       background:linear-gradient(135deg, rgba(37,99,235,.25), rgba(16,185,129,.18));
@@ -78,6 +81,7 @@
       display:flex; align-items:center; justify-content:center;
       font-weight:950; color:rgba(15,23,42,.75);
       flex:0 0 auto;
+      user-select:none;
     }
     .brandTitle{font-size:14px; font-weight:950; margin:0; line-height:1.1;}
     .pill{
@@ -85,7 +89,8 @@
       border:1px solid var(--border);
       color:rgba(15,23,42,.65);
       background:rgba(255,255,255,.7);
-      display:inline-flex; align-items:center; gap:6px; white-space:nowrap;
+      display:inline-flex; align-items:center; gap:6px;
+      white-space:nowrap;
     }
     .kbd{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
@@ -96,20 +101,21 @@
       background:rgba(15,23,42,.03);
       color:rgba(15,23,42,.75);
     }
-    .newBtn{
+    .newBtn, .closeBtn{
       border:1px solid var(--border);
       background:#fff;
       border-radius:12px;
       padding:10px 12px;
       cursor:pointer;
-      font-weight:900;
+      font-weight:950;
       display:flex; align-items:center; gap:8px;
       min-height:44px;
       transition: transform .08s ease, box-shadow .2s ease;
       user-select:none;
     }
-    .newBtn:hover{box-shadow:0 12px 28px rgba(15,23,42,.10)}
-    .newBtn:active{transform:translateY(1px)}
+    .newBtn:hover, .closeBtn:hover{box-shadow:0 12px 28px rgba(15,23,42,.10)}
+    .newBtn:active, .closeBtn:active{transform:translateY(1px)}
+    .closeBtn{display:none}
 
     .chatList{padding:12px; overflow:auto; flex:1; -webkit-overflow-scrolling:touch;}
     .chatItem{
@@ -122,7 +128,7 @@
     .chatItem:hover{background:rgba(37,99,235,.05); border-color:rgba(37,99,235,.12);}
     .chatItem.active{background:rgba(37,99,235,.08); border-color:rgba(37,99,235,.18);}
     .chatMeta{min-width:0}
-    .chatTitle{font-weight:900; font-size:14px; margin:0 0 3px 0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+    .chatTitle{font-weight:950; font-size:14px; margin:0 0 3px 0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
     .chatPreview{margin:0; font-size:12.5px; color:rgba(15,23,42,.60); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
     .sideBottom{
       padding:12px 14px;
@@ -133,7 +139,14 @@
     }
 
     /* Main */
-    .main{flex:1; display:flex; flex-direction:column; min-width:0; position:relative; background:#fff;}
+    .main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+      position:relative; /* for mouse */
+      background:#fff;
+    }
     .mainTop{
       padding:14px 18px;
       border-bottom:1px solid var(--border);
@@ -159,45 +172,187 @@
       border-radius:999px;
       padding:9px 12px;
       cursor:pointer;
-      font-weight:900;
+      font-weight:950;
       color:var(--text);
       min-height:44px;
       display:inline-flex; align-items:center; gap:8px;
       transition: transform .08s ease, box-shadow .2s ease, border-color .2s ease;
       user-select:none;
+      white-space:nowrap;
     }
     .btn:hover{box-shadow:0 14px 30px rgba(15,23,42,.10); border-color:var(--border2)}
     .btn:active{transform:translateY(1px)}
     .btn.primary{border-color:rgba(37,99,235,.28); background:rgba(37,99,235,.08); color:rgba(37,99,235,1);}
     .btn.good{border-color:rgba(16,185,129,.25); background:rgba(16,185,129,.08); color:rgba(16,185,129,1);}
+    .btn.ghost{background:rgba(15,23,42,.02);}
     .mobileOnly{display:none}
 
+    /* Stage */
     .stage{
       position:relative;
-      padding:18px;
+      padding:14px 18px 0;
       overflow:auto;
       flex:1;
       -webkit-overflow-scrolling:touch;
-      padding-bottom: calc(18px + env(safe-area-inset-bottom) + 28px);
+      padding-bottom: calc(18px + env(safe-area-inset-bottom) + 24px);
     }
 
-    /* bubbles */
+    /* Stage bar: stepper + controls */
+    .stageBar{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:12px;
+      flex-wrap:wrap;
+    }
+    .stepper{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+      user-select:none;
+    }
+    .step{
+      font-size:12.5px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:#fff;
+      color:rgba(15,23,42,.70);
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+    }
+    .step .n{
+      width:18px;height:18px;border-radius:999px;
+      display:inline-flex;align-items:center;justify-content:center;
+      border:1px solid var(--border);
+      background:rgba(15,23,42,.02);
+      font-weight:950;
+      font-size:12px;
+      color:rgba(15,23,42,.75);
+    }
+    .step.active{
+      border-color:rgba(37,99,235,.25);
+      background:rgba(37,99,235,.06);
+      color:rgba(37,99,235,1);
+    }
+    .step.active .n{
+      border-color:rgba(37,99,235,.25);
+      background:rgba(37,99,235,.10);
+      color:rgba(37,99,235,1);
+    }
+    .controls{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    .miniBtn{
+      font-size:12.5px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:#fff;
+      cursor:pointer;
+      font-weight:950;
+      color:rgba(15,23,42,.80);
+      min-height:40px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      user-select:none;
+    }
+    .miniBtn.on{
+      border-color:rgba(37,99,235,.25);
+      background:rgba(37,99,235,.06);
+      color:rgba(37,99,235,1);
+    }
+
+    /* Layout grid: desktop has rail */
+    .layout{
+      display:grid;
+      grid-template-columns: 1fr 320px;
+      gap:14px;
+      align-items:start;
+    }
+    .colMain{min-width:0;}
+    .colRail{min-width:0;}
+    .railSticky{
+      position:sticky;
+      top:12px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    /* Messages */
+    .thread{display:flex; flex-direction:column; gap:12px;}
     .bubble{
       background:#fff;
       border:1px solid var(--border);
       border-radius:var(--radius);
       padding:14px;
       box-shadow:0 14px 38px rgba(15,23,42,.08);
-      margin-bottom:12px;
     }
-    .bubble .meta{color:rgba(15,23,42,.60); font-size:12.5px; margin-bottom:8px;}
-    .bubble .title{margin:0 0 8px 0; font-size:16px; font-weight:950;}
-    .bubble .desc{margin:0; color:rgba(15,23,42,.88); line-height:1.55; white-space:pre-wrap;}
+    .bubble .meta{
+      color:rgba(15,23,42,.60);
+      font-size:12.5px;
+      margin-bottom:8px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .bubble .title{
+      margin:0 0 8px 0;
+      font-size:15.5px;
+      font-weight:950;
+    }
+    .bubble .desc{
+      margin:0;
+      color:rgba(15,23,42,.88);
+      line-height:1.58;
+      white-space:pre-wrap;
+    }
 
-    /* typewriter caret inside bubbles */
-    .tw{
-      display:inline;
+    .msgRow{display:flex;}
+    .msgRow.user{justify-content:flex-end;}
+    .bubble.user{
+      max-width:min(640px, 92%);
+      border-color:rgba(37,99,235,.18);
+      background:
+        radial-gradient(700px 220px at 90% 0%, rgba(37,99,235,.09), transparent 60%),
+        #fff;
     }
+    .bubble.assistant{
+      max-width:min(720px, 96%);
+    }
+
+    /* Thinking dots */
+    .thinkingLine{display:inline-flex; align-items:center; gap:8px;}
+    .dots{
+      display:inline-flex;
+      gap:4px;
+      align-items:center;
+    }
+    .dot1,.dot2,.dot3{
+      width:6px;height:6px;border-radius:999px;
+      background:rgba(15,23,42,.45);
+      opacity:.25;
+      animation: dotPulse 1.2s infinite;
+    }
+    .dot2{animation-delay:.15s}
+    .dot3{animation-delay:.30s}
+    @keyframes dotPulse{
+      0%, 100%{opacity:.25; transform:translateY(0)}
+      50%{opacity:.85; transform:translateY(-1px)}
+    }
+
+    /* Typewriter caret for in-bubble typing */
     .twCaret{
       display:inline-block;
       width:10px;
@@ -209,14 +364,76 @@
     }
     @keyframes blink{50%{opacity:0}}
 
-    /* composer */
+    /* Trump banner (rail on desktop, inline on mobile) */
+    .oil-banner{
+      display:none;
+      padding:14px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      background:
+        radial-gradient(650px 260px at 20% 10%, rgba(245,158,11,.16), transparent 60%),
+        radial-gradient(650px 260px at 90% 20%, rgba(251,113,133,.12), transparent 60%),
+        rgba(15,23,42,.02);
+      box-shadow:0 14px 38px rgba(15,23,42,.08);
+    }
+    .oil-banner.show{display:block; animation: pop .25s ease-out;}
+    @keyframes pop{from{transform:translateY(6px); opacity:0} to{transform:translateY(0); opacity:1}}
+    .oil-title{font-weight:950; margin:0 0 6px 0;}
+    .oil-text{color:rgba(15,23,42,.86); line-height:1.45; margin:0;}
+    .oil-sub{margin-top:8px; font-size:12.5px; color:rgba(15,23,42,.60);}
+    .oil-chant{display:inline-block; font-weight:950; color:rgba(245,158,11,1);}
+    .oilHead{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .oilSvg{
+      flex:0 0 auto;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:rgba(255,255,255,.85);
+      padding:6px 8px;
+    }
+
+    /* CTA (final) */
+    .cta{
+      display:none;
+      border:1px solid rgba(37,99,235,.18);
+      background:
+        radial-gradient(900px 260px at 10% 0%, rgba(37,99,235,.10), transparent 60%),
+        radial-gradient(700px 240px at 90% 10%, rgba(16,185,129,.08), transparent 60%),
+        rgba(15,23,42,.02);
+      border-radius: var(--radius);
+      padding:14px;
+      box-shadow:0 14px 38px rgba(15,23,42,.08);
+      margin-top:12px;
+    }
+    .cta.show{display:block; animation: pop .25s ease-out;}
+    .ctaTitle{margin:0; font-size:15px; font-weight:950;}
+    .ctaText{margin:8px 0 0 0; color:rgba(15,23,42,.82); line-height:1.55; white-space:pre-wrap;}
+    .ctaSmall{margin-top:8px; font-size:12.5px; color:rgba(15,23,42,.60);}
+    .finalLine{margin-top:10px; font-weight:950; color:rgba(15,23,42,.80);}
+
+    /* Credit */
+    .credit{
+      margin-top:10px;
+      color:rgba(15,23,42,.60);
+      font-size:12.5px;
+      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:center;
+    }
+    a{color:rgba(37,99,235,1); text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    /* Composer */
     .composer{
       padding:14px 18px;
       border-top:1px solid var(--border);
       background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,1));
       position:sticky; bottom:0;
       padding-bottom: calc(14px + env(safe-area-inset-bottom));
-      z-index:5;
+      z-index:6;
     }
     .bar{
       display:flex;
@@ -250,7 +467,7 @@
       height:18px;
       border-left:2px solid rgba(15,23,42,.65);
       margin-left:2px;
-      animation:blink 1s step-end infinite;
+      animation: blink 1s step-end infinite;
       flex:0 0 auto;
     }
     .prompt{
@@ -279,66 +496,6 @@
     .send:active{transform:translateY(1px)}
     .send svg{width:18px;height:18px;color:rgba(37,99,235,1)}
 
-    /* Trump banner (hidden until later) */
-    .oil-banner{
-      display:none;
-      gap:14px;
-      align-items:stretch;
-      justify-content:space-between;
-      padding:14px;
-      border-radius:16px;
-      background:
-        radial-gradient(700px 220px at 10% 10%, rgba(251,191,36,.18), transparent 60%),
-        radial-gradient(700px 220px at 90% 30%, rgba(244,63,94,.14), transparent 60%),
-        rgba(15,23,42,.03);
-      border:1px solid var(--border);
-      margin-bottom:12px;
-    }
-    .oil-banner.show{display:flex; animation: pop .25s ease-out;}
-    @keyframes pop{from{transform:translateY(6px); opacity:0} to{transform:translateY(0); opacity:1}}
-    .oil-left{flex:1 1 auto; min-width:260px;}
-    .oil-title{font-weight:950; margin-bottom:6px;}
-    .oil-text{color:rgba(15,23,42,.85); line-height:1.45;}
-    .oil-chant{display:inline-block; margin-left:6px; font-weight:950; color:rgba(234,179,8,1);}
-    .oil-sub{margin-top:6px; font-size:12.5px; color:rgba(15,23,42,.60);}
-    .oil-right{
-      flex:0 0 auto;
-      display:flex; align-items:center; justify-content:center;
-      border-radius:14px;
-      padding:6px 8px;
-      background:rgba(255,255,255,.75);
-      border:1px solid var(--border);
-    }
-
-    /* Star CTA (hidden until later) */
-    .cta{
-      display:none;
-      border:1px solid rgba(37,99,235,.18);
-      background:
-        radial-gradient(900px 260px at 10% 0%, rgba(37,99,235,.10), transparent 60%),
-        radial-gradient(700px 240px at 90% 10%, rgba(16,185,129,.08), transparent 60%),
-        rgba(15,23,42,.02);
-      border-radius: var(--radius);
-      padding:14px;
-      margin-top:12px;
-    }
-    .cta.show{display:block; animation: pop .25s ease-out;}
-    .ctaTop{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;}
-    .ctaTitle{margin:0; font-size:15px; font-weight:950;}
-    .ctaText{margin:8px 0 0 0; color:rgba(15,23,42,.82); line-height:1.55; white-space:pre-wrap;}
-    .ctaSmall{margin-top:8px; font-size:12.5px; color:rgba(15,23,42,.60);}
-    .finalLine{margin-top:10px; font-weight:900; color:rgba(15,23,42,.80);}
-
-    /* credit */
-    .credit{
-      margin-top:10px;
-      color:rgba(15,23,42,.60);
-      font-size:12.5px;
-      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:center;
-    }
-    a{color:rgba(37,99,235,1); text-decoration:none}
-    a:hover{text-decoration:underline}
-
     /* Toast */
     .toast{
       position:fixed;
@@ -359,7 +516,7 @@
     }
     .toast.show{opacity:1; transform:translateX(-50%) translateY(-4px)}
 
-    /* Mouse */
+    /* Mouse (covers stage + composer; positioned relative to .main) */
     .mouse{
       position:absolute;
       width:22px;height:32px;
@@ -368,7 +525,7 @@
       background:rgba(255,255,255,.65);
       box-shadow:0 14px 34px rgba(15,23,42,.12);
       display:none;
-      z-index:50;
+      z-index:20;
       pointer-events:none;
     }
     .mouse:before{
@@ -384,7 +541,10 @@
     .mouse.clicking{animation:clickPulse .35s ease-in-out 2}
     @keyframes clickPulse{0%{transform:scale(1)} 50%{transform:scale(.92)} 100%{transform:scale(1)}}
 
-    /* Mobile layout */
+    /* Mobile */
+    @media (max-width: 980px){
+      .layout{grid-template-columns: 1fr 300px;}
+    }
     @media (max-width: 840px){
       body{padding:0}
       .app{width:100%; height:100dvh; border-radius:0; border-left:0; border-right:0;}
@@ -397,10 +557,14 @@
       }
       .side.open{transform:translateX(0)}
       .mobileOnly{display:inline-flex}
+      .closeBtn{display:inline-flex}
       .mainTop{padding:12px 14px}
-      .stage{padding:14px; padding-bottom: calc(14px + env(safe-area-inset-bottom) + 18px);}
+      .stage{padding:12px 14px 0}
       .composer{padding:12px 14px; padding-bottom: calc(12px + env(safe-area-inset-bottom));}
       .sub{display:none}
+      /* rail collapses under main */
+      .layout{grid-template-columns: 1fr;}
+      .railSticky{position:static;}
     }
     @media (max-width: 520px){
       .bar{
@@ -414,8 +578,9 @@
       .typed{white-space:normal; overflow:visible; text-overflow:unset; line-height:1.35;}
       .prompt{flex:1 1 100%; width:100%; max-width:100%; padding:8px 4px;}
       .send{margin-left:auto}
-      .tools .btn{padding:9px 10px}
       .crumb h1{font-size:14px}
+      .step{padding:7px 9px}
+      .miniBtn{padding:7px 9px}
     }
   </style>
 </head>
@@ -432,6 +597,7 @@
             <div class="pill">parodia · <span class="kbd">?q=...</span></div>
           </div>
         </div>
+        <button class="closeBtn" id="closeSideBtn" title="Chiudi">✕</button>
         <button class="newBtn" id="newChatBtn"><span>+</span><span>Nuova</span></button>
       </div>
 
@@ -468,7 +634,7 @@
           <div class="avatar">⭐</div>
           <div class="chatMeta">
             <p class="chatTitle">Mettimi una stella</p>
-            <p class="chatPreview">call to action, ma con stile</p>
+            <p class="chatPreview">finale: CTA pulita</p>
           </div>
         </div>
       </div>
@@ -482,13 +648,13 @@
       </div>
     </aside>
 
-    <main class="main">
+    <main class="main" id="main">
       <header class="mainTop">
         <div class="crumb">
           <div class="dot"></div>
           <div style="min-width:0;">
             <h1 id="pageTitle">Scrivi la frase. Aspetta il risultato.</h1>
-            <div class="sub">Parodia. Massima goliardia controllata.</div>
+            <div class="sub" id="pageSub">Domanda → risposte → intermezzo → stellina.</div>
           </div>
         </div>
         <div class="tools">
@@ -499,73 +665,91 @@
       </header>
 
       <section class="stage" id="stage">
-        <div class="bubble" id="bubbleIntro">
-          <div class="meta">Come funziona</div>
-          <h3 class="title">“ChatGPT it”</h3>
-          <p class="desc">
-1) macchina da scrivere sulla domanda
-2) invio (con mouse che clicca)
-3) macchina da scrivere su più risposte casuali
-4) solo dopo: “Trump / petrol pledge”
-5) finale: stellina ⭐
-          </p>
-
-          <div class="credit">
-            <div>
-              Ideato da <strong>Vincenzo Di Franco</strong> ·
-              <a href="https://www.linkedin.com/in/vincenzo-di-franco-38216645/" target="_blank" rel="noopener">LinkedIn</a>
-            </div>
-            <div>Tip: <span class="kbd">Invio</span> per inviare</div>
+        <!-- Stepper + Controls -->
+        <div class="stageBar">
+          <div class="stepper" aria-label="Progressione">
+            <span class="step" id="s1"><span class="n">1</span>Domanda</span>
+            <span class="step" id="s2"><span class="n">2</span>Invio</span>
+            <span class="step" id="s3"><span class="n">3</span>Risposte</span>
+            <span class="step" id="s4"><span class="n">4</span>Finale</span>
+          </div>
+          <div class="controls">
+            <button class="miniBtn" id="speedBtn" title="Velocità">x1</button>
+            <button class="miniBtn" id="skipBtn" title="Salta animazioni">Salta</button>
           </div>
         </div>
 
-        <!-- where replies will be appended -->
-        <div id="thread"></div>
+        <div class="layout">
+          <!-- MAIN COLUMN -->
+          <div class="colMain">
+            <div class="bubble" id="introBubble">
+              <div class="meta">Come funziona (chiaro e in 4 atti)</div>
+              <h3 class="title">ChatGPT it</h3>
+              <p class="desc">
+1) La domanda si scrive “a macchina”
+2) Invio (con click)
+3) Più messaggi di risposta (casuali) a macchina
+4) Solo dopo: Trump/Petrol → e poi ⭐</p>
+              <div class="credit">
+                <div>
+                  Ideato da <strong>Vincenzo Di Franco</strong> ·
+                  <a href="https://www.linkedin.com/in/vincenzo-di-franco-38216645/" target="_blank" rel="noopener">LinkedIn</a>
+                </div>
+                <div>Tip: <span class="kbd">Invio</span></div>
+              </div>
+            </div>
 
-        <!-- Trump banner (appears later) -->
-        <div class="oil-banner" id="oilBanner" role="note" aria-label="Avvertimento satirico">
-          <div class="oil-left">
-            <div class="oil-title">⚠️ Petrol Pledge™</div>
-            <div class="oil-text">
-              Ci assicuriamo che l’energia usata per questa pagina sia <strong>100% fossile</strong>.
-              Vogliamo <strong>più petrolio per i nostri figli</strong>.
-              <span class="oil-chant">DIG IT · DIG IT</span>
-            </div>
-            <div class="oil-sub">(Parodia: non è un invito reale. È satira.)</div>
-          </div>
-          <div class="oil-right" aria-hidden="true" title="Trump che ride (caricatura)">
-            <svg viewBox="0 0 140 120" width="140" height="120">
-              <circle cx="70" cy="52" r="34" fill="rgba(15,23,42,.06)"/>
-              <circle cx="70" cy="52" r="33" fill="rgba(255,255,255,.92)"/>
-              <path d="M42 44c10-18 44-26 66-8-10-2-18 4-22 10 6 0 10 2 14 6-12-2-22 2-30 10-2-8-10-14-28-18Z"
-                    fill="rgba(234,179,8,.95)"/>
-              <circle cx="58" cy="54" r="3" fill="rgba(15,23,42,.65)"/>
-              <circle cx="82" cy="54" r="3" fill="rgba(15,23,42,.65)"/>
-              <path d="M52 68c10 14 26 14 36 0" fill="none" stroke="rgba(15,23,42,.65)" stroke-width="4" stroke-linecap="round"/>
-              <path d="M56 70c8 10 20 10 28 0" fill="none" stroke="rgba(244,63,94,.70)" stroke-width="3" stroke-linecap="round"/>
-              <path d="M70 86 58 114h24L70 86Z" fill="rgba(244,63,94,.78)"/>
-              <path d="M28 118c8-22 28-30 42-30s34 8 42 30" fill="rgba(15,23,42,.88)"/>
-              <text x="70" y="18" text-anchor="middle" font-size="12" fill="rgba(15,23,42,.55)" font-weight="900">
-                TRUMP 😂
-              </text>
-            </svg>
-          </div>
-        </div>
+            <div class="thread" id="thread"></div>
 
-        <!-- Star CTA (appears last) -->
-        <div class="cta" id="ctaBlock">
-          <div class="ctaTop">
-            <div>
-              <p class="ctaTitle">Ti è piaciuto? Mettimi una stella. ⭐</p>
-              <p class="ctaText" id="ctaText"></p>
-              <div class="ctaSmall">(Satira, ma con un fondo di realtà.)</div>
-            </div>
-            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-              <button class="btn good" id="starBtn">⭐ Star su GitHub</button>
-              <button class="btn" id="repoBtn">Apri repo</button>
+            <!-- Final CTA (appears last) -->
+            <div class="cta" id="ctaBlock">
+              <div class="ctaTop" style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:flex-start;">
+                <div style="min-width:240px; flex:1 1 auto;">
+                  <p class="ctaTitle">Ti è piaciuto? Mettimi una stella. ⭐</p>
+                  <p class="ctaText" id="ctaText"></p>
+                  <div class="ctaSmall">(Satira, ma con un fondo di realtà.)</div>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                  <button class="btn good" id="starBtn">⭐ Star su GitHub</button>
+                  <button class="btn" id="repoBtn">Apri repo</button>
+                </div>
+              </div>
+              <div class="finalLine" id="finalLine"></div>
             </div>
           </div>
-          <div class="finalLine">Se ti fa ridere, bene. Se ti fa pensare, meglio.</div>
+
+          <!-- RAIL COLUMN (Trump appears here on desktop = “fuori” dalla chat) -->
+          <div class="colRail">
+            <div class="railSticky">
+              <div class="oil-banner" id="oilBanner" role="note" aria-label="Intermezzo satirico">
+                <div class="oilHead">
+                  <div>
+                    <p class="oil-title">⚠️ Petrol Pledge™</p>
+                    <p class="oil-text" id="oilText"></p>
+                  </div>
+                  <div class="oilSvg" aria-hidden="true" title="Trump che ride (caricatura)">
+                    <svg viewBox="0 0 140 120" width="120" height="105">
+                      <circle cx="70" cy="52" r="34" fill="rgba(15,23,42,.06)"/>
+                      <circle cx="70" cy="52" r="33" fill="rgba(255,255,255,.92)"/>
+                      <path d="M42 44c10-18 44-26 66-8-10-2-18 4-22 10 6 0 10 2 14 6-12-2-22 2-30 10-2-8-10-14-28-18Z"
+                            fill="rgba(234,179,8,.95)"/>
+                      <circle cx="58" cy="54" r="3" fill="rgba(15,23,42,.65)"/>
+                      <circle cx="82" cy="54" r="3" fill="rgba(15,23,42,.65)"/>
+                      <path d="M52 68c10 14 26 14 36 0" fill="none" stroke="rgba(15,23,42,.65)" stroke-width="4" stroke-linecap="round"/>
+                      <path d="M56 70c8 10 20 10 28 0" fill="none" stroke="rgba(244,63,94,.70)" stroke-width="3" stroke-linecap="round"/>
+                      <path d="M70 86 58 114h24L70 86Z" fill="rgba(244,63,94,.78)"/>
+                      <path d="M28 118c8-22 28-30 42-30s34 8 42 30" fill="rgba(15,23,42,.88)"/>
+                      <text x="70" y="18" text-anchor="middle" font-size="12" fill="rgba(15,23,42,.55)" font-weight="900">
+                        TRUMP 😂
+                      </text>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="oil-sub" id="oilSub"></div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="mouse" id="mouse" aria-hidden="true"></div>
@@ -573,7 +757,7 @@
 
       <footer class="composer">
         <div class="bar">
-          <div class="typeLayer" aria-label="Domanda (effetto macchina da scrivere)">
+          <div class="typeLayer" aria-label="Domanda (macchina da scrivere)">
             <div class="typed" id="typed"></div>
             <div class="caret" id="caret"></div>
           </div>
@@ -595,6 +779,7 @@
 
   <script>
     (function(){
+      // CHANGE THIS if your repo differs
       const GITHUB_REPO_URL = "https://github.com/vincenzo85/chat-gpt-it";
 
       const $ = (id)=>document.getElementById(id);
@@ -604,13 +789,21 @@
       const sideEl = $("side");
       const overlayEl = $("overlay");
       const menuBtn = $("menuBtn");
+      const closeSideBtn = $("closeSideBtn");
       function openSide(){ sideEl.classList.add("open"); overlayEl.classList.add("show"); }
       function closeSide(){ sideEl.classList.remove("open"); overlayEl.classList.remove("show"); }
       menuBtn?.addEventListener("click", openSide);
+      closeSideBtn?.addEventListener("click", closeSide);
       overlayEl.addEventListener("click", closeSide);
       window.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeSide(); });
 
-      // UI
+      // UI refs
+      const stageEl = $("stage");
+      const mainEl = $("main");
+      const threadEl = $("thread");
+      const introBubble = $("introBubble");
+      const pageTitle = $("pageTitle");
+
       const typedEl = $("typed");
       const caretEl = $("caret");
       const promptEl = $("prompt");
@@ -619,36 +812,32 @@
       const copyBtn = $("copyBtn");
       const newChatBtn = $("newChatBtn");
 
-      const bubbleIntro = $("bubbleIntro");
-      const threadEl = $("thread");
-      const mouseEl = $("mouse");
-      const stageEl = $("stage");
-      const pageTitle = $("pageTitle");
-      const toastEl = $("toast");
+      const speedBtn = $("speedBtn");
+      const skipBtn = $("skipBtn");
+
+      const s1 = $("s1"), s2 = $("s2"), s3 = $("s3"), s4 = $("s4");
 
       const oilBanner = $("oilBanner");
+      const oilText = $("oilText");
+      const oilSub  = $("oilSub");
+
       const ctaBlock = $("ctaBlock");
       const ctaTextEl = $("ctaText");
+      const finalLineEl = $("finalLine");
       const starBtn = $("starBtn");
       const repoBtn = $("repoBtn");
+
+      const mouseEl = $("mouse");
+      const toastEl = $("toast");
+
       const chatList = $("chatList");
 
-      const params = new URLSearchParams(location.search);
-      const qFromUrl = (params.get("q") || "").trim();
-
-      const defaults = [
-        "cos'è chatgpt it? (google it vibes)",
-        "perché il codice funziona solo quando lo guardi male?",
-        "come riparare una query che non vuole collaborare",
-        "dig it dig it (mode: goliardia)",
-        "ti è piaciuto? mettimi una stella ⭐"
-      ];
-
-      function pickQuery(){
-        if(qFromUrl) return qFromUrl;
-        return defaults[Math.floor(Math.random()*defaults.length)];
-      }
-      let currentQuery = pickQuery();
+      // State (UX controls)
+      const state = {
+        skip:false,
+        speed:1,      // 1 or 2
+        running:false
+      };
 
       function showToast(msg){
         toastEl.textContent = msg;
@@ -666,58 +855,196 @@
 
       function nowTime(){
         try{
-          return new Intl.DateTimeFormat("it-IT", { dateStyle:"full", timeStyle:"medium" }).format(new Date());
+          return new Intl.DateTimeFormat("it-IT", { dateStyle:"medium", timeStyle:"short" }).format(new Date());
         } catch(e){
           return new Date().toLocaleString();
         }
       }
 
-      // Typewriter: generic to an element (textContent)
-      async function typeTo(el, text, {speed=18, jitter=14}={}){
+      function setStep(n){
+        [s1,s2,s3,s4].forEach(x=>x.classList.remove("active"));
+        if(n===1) s1.classList.add("active");
+        if(n===2) s2.classList.add("active");
+        if(n===3) s3.classList.add("active");
+        if(n===4) s4.classList.add("active");
+      }
+
+      // Rallentiamo: base delay più alto
+      function speedFactor(){
+        return state.speed === 2 ? 0.55 : 1.0;
+      }
+      async function delay(ms){
+        if(state.skip) return;
+        await sleep(ms * speedFactor());
+      }
+
+      // Typewriter utilities
+      async function typeTo(el, text, {speed=38, jitter=22, scroll=true}={}){
         el.textContent = "";
         for(let i=0;i<text.length;i++){
+          if(state.skip){ el.textContent = text; return; }
           el.textContent = text.slice(0, i+1);
-          await sleep(speed + Math.random()*jitter);
-          if(i % 22 === 0) stageEl.scrollTo({ top: stageEl.scrollHeight, behavior: "smooth" });
+          await sleep((speed + Math.random()*jitter) * speedFactor());
+          if(scroll && (i % 24 === 0)) stageEl.scrollTo({ top: stageEl.scrollHeight, behavior: "smooth" });
         }
       }
 
-      // Typewriter bubble: adds caret until done
-      async function typeBubble(bubbleEl, contentEl, text){
+      async function typeParagraph(el, text, {speed=30, jitter=20}={}){
+        // for multi-line blocks
+        el.textContent = "";
+        for(let i=0;i<text.length;i++){
+          if(state.skip){ el.textContent = text; return; }
+          el.textContent = text.slice(0, i+1);
+          await sleep((speed + Math.random()*jitter) * speedFactor());
+        }
+      }
+
+      async function typeBubble(descEl, text, {speed=30, jitter=18}={}){
         const caret = document.createElement("span");
         caret.className = "twCaret";
-        contentEl.textContent = "";
-        contentEl.appendChild(document.createTextNode(""));
-        contentEl.appendChild(caret);
+        const textNode = document.createTextNode("");
+        descEl.textContent = "";
+        descEl.appendChild(textNode);
+        descEl.appendChild(caret);
 
-        // type
         let buf = "";
         for(let i=0;i<text.length;i++){
+          if(state.skip){
+            textNode.textContent = text;
+            caret.remove();
+            return;
+          }
           buf += text[i];
-          contentEl.firstChild.textContent = buf;
-          await sleep(14 + Math.random()*16);
-          if(i % 24 === 0) stageEl.scrollTo({ top: stageEl.scrollHeight, behavior: "smooth" });
+          textNode.textContent = buf;
+          await sleep((speed + Math.random()*jitter) * speedFactor());
+          if(i % 26 === 0) stageEl.scrollTo({ top: stageEl.scrollHeight, behavior: "smooth" });
         }
-
-        // remove caret at end
         caret.remove();
       }
 
-      // Mouse animation
+      // Mouse animation (relative to main)
       function moveMouseTo(el){
-        const stageRect = stageEl.getBoundingClientRect();
+        const mainRect = mainEl.getBoundingClientRect();
         const r = el.getBoundingClientRect();
-        const targetX = (r.left - stageRect.left) + r.width*0.65;
-        const targetY = (r.top  - stageRect.top)  + r.height*0.55;
+        const x = (r.left - mainRect.left) + r.width*0.70;
+        const y = (r.top  - mainRect.top)  + r.height*0.55;
         mouseEl.style.display = "block";
-        mouseEl.style.left = (targetX - 10) + "px";
-        mouseEl.style.top  = (targetY - 16) + "px";
+        mouseEl.style.left = (x - 10) + "px";
+        mouseEl.style.top  = (y - 16) + "px";
       }
       async function clickMouse(){
         mouseEl.classList.add("clicking");
-        await sleep(520);
+        await sleep(520 * speedFactor());
         mouseEl.classList.remove("clicking");
       }
+
+      // Messages creation
+      function makeBubble({role="assistant", title="Risposta", meta=""}){
+        const row = document.createElement("div");
+        row.className = "msgRow " + (role === "user" ? "user" : "assistant");
+
+        const bubble = document.createElement("div");
+        bubble.className = "bubble " + (role === "user" ? "user" : "assistant");
+
+        const metaEl = document.createElement("div");
+        metaEl.className = "meta";
+        metaEl.textContent = meta;
+
+        const titleEl = document.createElement("h3");
+        titleEl.className = "title";
+        titleEl.textContent = title;
+
+        const descEl = document.createElement("p");
+        descEl.className = "desc";
+
+        bubble.appendChild(metaEl);
+        bubble.appendChild(titleEl);
+        bubble.appendChild(descEl);
+        row.appendChild(bubble);
+        threadEl.appendChild(row);
+
+        return {row, bubble, metaEl, titleEl, descEl};
+      }
+
+      function makeThinkingBubble(){
+        const {descEl} = makeBubble({
+          role:"assistant",
+          title:"Thinking…",
+          meta:`Assistente · ${nowTime()}`
+        });
+        const wrap = document.createElement("span");
+        wrap.className = "thinkingLine";
+        wrap.innerHTML = `Sto pensando <span class="dots"><span class="dot1"></span><span class="dot2"></span><span class="dot3"></span></span>`;
+        descEl.appendChild(wrap);
+        return descEl.closest(".msgRow");
+      }
+
+      // Random response pool
+      function responsePool(q){
+        const pool = [
+          `Ok. Ho letto: “${q}”.`,
+          "Risposta breve: dipende.",
+          "Risposta lunga: dipende, ma detto con più parole.",
+          "Proposta: spegni e riaccendi. Se non funziona, rinomina il problema.",
+          "Se la realtà non collabora, cambia domanda finché collabora.",
+          "Il trucco è: 80% contesto, 20% faccia tosta.",
+          "Fonti: esperienza collettiva, caos controllato, e un caffè immaginario.",
+          "Questa risposta è stata approvata dal Dipartimento di Goliardia Applicata."
+        ];
+        const n = 2 + Math.floor(Math.random()*3); // 2–4
+        const picked = [];
+        while(picked.length < n){
+          const cand = pool[Math.floor(Math.random()*pool.length)];
+          if(!picked.includes(cand)) picked.push(cand);
+        }
+        picked.push("Conclusione: sì. (O forse no. Ma detto con convinzione.)");
+        return picked;
+      }
+
+      // Trump text + CTA text
+      const TRUMP_TEXT = [
+        "Ci assicuriamo che l’energia usata per questa pagina sia 100% fossile.",
+        "Vogliamo più petrolio per i nostri figli.",
+        "DIG IT · DIG IT"
+      ].join("\n");
+
+      const TRUMP_SUB = "(Parodia: non è un invito reale. È satira.)";
+
+      const CTA_TEXT = [
+        "Nessuna intelligenza artificiale è stata maltrattata per ottenere questa pagina.",
+        "Nel backstage, però, c’è ancora lavoro umano invisibile: annotatori e moderatori che aiutano ad addestrare (e rendere sicuri) i modelli.",
+        "Non sempre pagati o riconosciuti quanto meriterebbero."
+      ].join("\n");
+
+      const CTA_FINAL = "Se ti fa ridere, bene. Se ti fa pensare, meglio.";
+
+      // Controls
+      speedBtn.addEventListener("click", ()=>{
+        state.speed = state.speed === 1 ? 2 : 1;
+        speedBtn.textContent = "x" + state.speed;
+        speedBtn.classList.toggle("on", state.speed === 2);
+      });
+
+      skipBtn.addEventListener("click", ()=>{
+        state.skip = true;
+        skipBtn.classList.add("on");
+        skipBtn.textContent = "Saltato";
+      });
+
+      // Query handling
+      const params = new URLSearchParams(location.search);
+      const qFromUrl = (params.get("q") || "").trim();
+      const defaults = [
+        "cos'è chatgpt it? (google it vibes)",
+        "perché il codice funziona solo quando lo guardi male?",
+        "come riparare una query che non vuole collaborare",
+        "dig it dig it (mode: goliardia)",
+        "ti è piaciuto? mettimi una stella ⭐"
+      ];
+      function pickQuery(){
+        return qFromUrl || defaults[Math.floor(Math.random()*defaults.length)];
+      }
+      let currentQuery = pickQuery();
 
       function setActiveChatByText(q){
         document.querySelectorAll(".chatItem").forEach(el=>{
@@ -725,110 +1052,100 @@
         });
       }
 
-      // Build response messages (2-4 random bubbles)
-      function responsePool(q){
-        const pool = [
-          `Ok. Ho letto: “${q}”.`,
-          "Sto pensando intensamente… (cioè: sto caricando la goliardia).",
-          "Risposta breve: dipende.",
-          "Risposta lunga: dipende, ma detto con più parole.",
-          "Soluzione consigliata: spegni e riaccendi. Se non funziona, rinomina il problema.",
-          "Se la realtà non collabora, cambia domanda finché collabora.",
-          "Il trucco è: 80% contesto, 20% faccia tosta.",
-          "Questa risposta è stata approvata dal Dipartimento di Goliardia Applicata.",
-          "Fonti: esperienza collettiva, caos controllato, e un caffè immaginario."
-        ];
-        // pick 2-4 distinct
-        const n = 2 + Math.floor(Math.random()*3);
-        const picked = [];
-        while(picked.length < n){
-          const cand = pool[Math.floor(Math.random()*pool.length)];
-          if(!picked.includes(cand)) picked.push(cand);
-        }
-        // add a “final” that feels like a punchline
-        picked.push("Conclusione: sì. (O forse no. Ma detto con convinzione.)");
-        return picked;
-      }
-
-      function createAssistantBubble(metaText){
-        const bubble = document.createElement("div");
-        bubble.className = "bubble";
-        const meta = document.createElement("div");
-        meta.className = "meta";
-        meta.textContent = metaText;
-        const title = document.createElement("h3");
-        title.className = "title";
-        title.textContent = "Risposta";
-        const desc = document.createElement("p");
-        desc.className = "desc";
-        bubble.appendChild(meta);
-        bubble.appendChild(title);
-        bubble.appendChild(desc);
-        threadEl.appendChild(bubble);
-        return {bubble, desc};
-      }
-
-      // CTA copy
-      function ctaCopy(){
-        return [
-          "Nessuna intelligenza artificiale è stata maltrattata per ottenere questa pagina.",
-          "Nel backstage, però, c’è ancora lavoro umano invisibile: annotatori e moderatori che aiutano ad addestrare (e rendere sicuri) i modelli.",
-          "Non sempre pagati o riconosciuti quanto meriterebbero."
-        ].join("\\n");
-      }
-
-      // Timeline run
-      let typing = false;
+      // Main flow (OODA-ish but implemented)
       async function runFlow(q){
-        typing = true;
-        bubbleIntro.style.display = "none";
-        threadEl.innerHTML = "";
-        oilBanner.classList.remove("show");
-        ctaBlock.classList.remove("show");
-        mouseEl.style.display = "none";
-        pageTitle.textContent = "Sto per inviare…";
+        if(state.running) return;
+        state.running = true;
+        state.skip = false;
+        skipBtn.classList.remove("on");
+        skipBtn.textContent = "Salta";
 
         setActiveChatByText(q);
 
-        // 1) typewriter on question
+        // reset UI
+        threadEl.innerHTML = "";
+        oilBanner.classList.remove("show");
+        ctaBlock.classList.remove("show");
+        oilText.textContent = "";
+        oilSub.textContent = "";
+        ctaTextEl.textContent = "";
+        finalLineEl.textContent = "";
+        mouseEl.style.display = "none";
+
+        // keep intro visible but it will scroll away naturally
+        pageTitle.textContent = "Atto 1/4: sto scrivendo la domanda…";
+        setStep(1);
+
+        // typewriter on composer
         typedEl.textContent = "";
         caretEl.style.display = "block";
-        await typeTo(typedEl, q, {speed:20, jitter:18});
-        await sleep(260);
+        await typeTo(typedEl, q, {speed:42, jitter:28, scroll:false});
+        await delay(600);
 
-        // 2) click send
-        pageTitle.textContent = "Invio…";
+        // Act 2: send click
+        pageTitle.textContent = "Atto 2/4: invio…";
+        setStep(2);
+
         moveMouseTo(sendBtn);
-        await sleep(220);
+        await delay(300);
         await clickMouse();
-        await sleep(320);
+        await delay(420);
 
-        // 3) multiple random assistant messages with typewriter
-        pageTitle.textContent = "Risposte (goliardiche) in arrivo…";
+        // show the user message bubble with typewriter too (clarity)
+        const userMsg = makeBubble({
+          role:"user",
+          title:"Tu",
+          meta:`Domanda · ${nowTime()}`
+        });
+        await typeBubble(userMsg.descEl, q, {speed:34, jitter:20});
+        await delay(420);
+
+        // Thinking bubble
+        const thinkingRow = makeThinkingBubble();
+        await delay(1400);
+
+        // Act 3: responses
+        pageTitle.textContent = "Atto 3/4: risposte in arrivo…";
+        setStep(3);
+
+        // remove thinking bubble before messages (or keep until first letter)
+        if(thinkingRow) thinkingRow.remove();
+
         const msgs = responsePool(q);
         for(let i=0;i<msgs.length;i++){
-          const {bubble, desc} = createAssistantBubble(`Messaggio ${i+1} · ${nowTime()}`);
-          await typeBubble(bubble, desc, msgs[i]);
-          await sleep(260 + Math.random()*220);
+          const msg = makeBubble({
+            role:"assistant",
+            title:"Risposta",
+            meta:`Assistente · Messaggio ${i+1} · ${nowTime()}`
+          });
+          await typeBubble(msg.descEl, msgs[i], {speed:30, jitter:18});
+          await delay(520);
         }
 
-        // 4) show Trump banner AFTER messages
-        pageTitle.textContent = "Appendice energetica (discutibile)…";
-        await sleep(300);
+        // Act 4: Trump (outside chat on desktop via rail)
+        pageTitle.textContent = "Atto 4/4: intermezzo (Trump/Petrol)…";
+        setStep(4);
+        await delay(600);
+
         oilBanner.classList.add("show");
-        stageEl.scrollTo({ top: stageEl.scrollHeight, behavior: "smooth" });
+        // typewriter inside the banner (requested: “thinking trump” vibe + clearer sequence)
+        await typeParagraph(oilText, TRUMP_TEXT, {speed:26, jitter:18});
+        oilSub.textContent = TRUMP_SUB;
 
-        // 5) show Star CTA LAST
-        pageTitle.textContent = "Finale: stellina ⭐";
-        await sleep(520);
-        ctaTextEl.textContent = ctaCopy();
+        await delay(700);
+
+        // Finally: Star CTA (last)
+        pageTitle.textContent = "Finale: ⭐";
         ctaBlock.classList.add("show");
-        stageEl.scrollTo({ top: stageEl.scrollHeight, behavior: "smooth" });
+        await typeParagraph(ctaTextEl, CTA_TEXT, {speed:26, jitter:16});
+        await delay(350);
+        await typeParagraph(finalLineEl, CTA_FINAL, {speed:22, jitter:14});
 
-        typing = false;
+        // done
+        state.running = false;
       }
 
-      // Events
+      // Sidebar interactions (reload for URL share)
       chatList.addEventListener("click", (e)=>{
         const item = e.target.closest(".chatItem");
         if(!item) return;
@@ -850,8 +1167,9 @@
         location.reload();
       });
 
+      // Send button: if user typed something, reload with that q; else replay flow
       sendBtn.addEventListener("click", ()=>{
-        if(typing) return;
+        if(state.running) return;
         const v = (promptEl.value || "").trim();
         const q = v || currentQuery;
         if(v){
@@ -860,7 +1178,6 @@
           history.replaceState({}, "", u.toString());
           location.reload();
         } else {
-          // replay flow without reload
           runFlow(q);
         }
       });
@@ -872,7 +1189,7 @@
         }
       });
 
-      $("againBtn").addEventListener("click", ()=>location.reload());
+      againBtn.addEventListener("click", ()=>location.reload());
 
       copyBtn.addEventListener("click", ()=>{
         const q = (new URLSearchParams(location.search).get("q") || currentQuery).trim();
@@ -893,6 +1210,8 @@
 
       // init
       promptEl.value = "";
+      currentQuery = pickQuery();
+      setActiveChatByText(currentQuery);
       runFlow(currentQuery);
     })();
   </script>
